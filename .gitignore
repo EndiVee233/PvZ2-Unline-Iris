@@ -1,0 +1,10 @@
+*.apk
+*.apk.idsig
+*.obb
+*.so
+*.dex
+*.keystore
+*.jks
+/tools/
+/work/
+__pycache__/
