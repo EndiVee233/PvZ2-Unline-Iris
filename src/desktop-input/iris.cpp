@@ -102,9 +102,13 @@ static bool paused(Byte *board) {
     return field<Byte>(board, 0x671) != 0;
 }
 
-static bool playable(Byte *board) {
+static bool inBattle(Byte *board) {
     Word state = field<Word>(board, 0xa8);
-    return (state == 4 || state == 5) && !paused(board);
+    return state == 4 || state == 5;
+}
+
+static bool playable(Byte *board) {
+    return inBattle(board) && !paused(board);
 }
 
 static Byte *topModal(Byte *app) {
@@ -344,7 +348,7 @@ static bool beginCoinDraw(Word base, Byte *coin, Byte *graphics) {
     constexpr Word holdUntil = fadeIn + 2048;
     constexpr Word hideAt = holdUntil + 2048;
     Word alpha = 255;
-    if (!board || field<Word>(board, 0xa8) - 4u > 1) {
+    if (!board || !inBattle(board)) {
         fade.widget = nullptr;
     } else {
         Word stamp[2];
@@ -383,11 +387,33 @@ static bool beginCoinDraw(Word base, Byte *coin, Byte *graphics) {
     return true;
 }
 
+static bool styledChooser(Word base) {
+    if (!*reinterpret_cast<Byte *>(base + 0xdf978c)) return false;
+    Byte *app = **reinterpret_cast<Byte ***>(base + 0xd00838);
+    Byte *board = app ? field<Byte *>(app, 0x6c0) : nullptr;
+    return board && field<Word>(board, 0xa8) == 3;
+}
+
+static void styleFontText(Word base, const Word **text, bool tripTitle) {
+    const Word *characters = *text;
+    const Word length = characters[-3];  // GNU basic_string<wchar_t> representation.
+    Word styled[256];
+    if (length >= sizeof(styled) / sizeof(*styled)) return;
+    bool apply = !tripTitle;
+    for (Word index = 0; index < length; ++index) {
+        const Word character = characters[index];
+        apply |= character >= 0xf880 && character < 0xf8ff;
+        // Match MAP_LATIN_BASE and TRIP_GLYPHS in the font builder.
+        styled[index] = character >= 0x21 && character <= 0x7e ? 0xf800 + character : character;
+    }
+    if (apply && length) native<void>(base, 0xb77320, text, styled, length);
+}
+
 static void drawSpeedButton(Word base, Byte *pause, Byte *graphics) {
     Byte *app = **reinterpret_cast<Byte ***>(base + 0xd00838);
     if (!app) return;
     Byte *board = field<Byte *>(app, 0x6c0);
-    if (!board) return;
+    if (!board || !inBattle(board)) return;
     Byte *modal = topModal(app);
     Byte *pauseMenu = field<Byte *>(app, 0xbc4);
     const bool showingPause = paused(board) && pauseMenu && modal == pauseMenu;
@@ -594,8 +620,27 @@ static Byte *seedSlot(Word base, Byte *board, int key) {
     return index >= 0 && index < count ? cards[index].widget : nullptr;
 }
 
+struct DisplayNameFont {
+    int originalSize;
+    Byte *font;
+};
+
+static Word createDisplayNameFont(Word base, Byte *factory, Byte *descriptor, Word index) {
+    auto &nameFont = reinterpret_cast<DisplayNameFont *>(base + 0xdf9790)[index];
+    auto &size = field<float>(descriptor, 0x200);
+    const float reducedSize = size;
+    if (size != nameFont.originalSize) {
+        size = static_cast<float>(nameFont.originalSize);
+        nameFont.font = native<Byte *>(base, 0xa315bc, factory, descriptor);
+        size = reducedSize;
+    } else {
+        nameFont.font = nullptr;
+    }
+    return native<Word>(base, 0xa315bc, factory, descriptor);
+}
+
 extern "C" __attribute__((section(".text.entry")))
-bool irisDesktop(Word base, Byte *driver, Touch *event, Word phase) {
+Word irisDesktop(Word base, Byte *driver, Touch *event, Word phase) {
     if (phase < 2) {
         drawPending(base, driver, reinterpret_cast<Byte *>(event), phase == 1);
         return false;
@@ -605,6 +650,30 @@ bool irisDesktop(Word base, Byte *driver, Touch *event, Word phase) {
         return false;
     }
     if (phase == 3) return beginCoinDraw(base, driver, reinterpret_cast<Byte *>(event));
+    if (phase == 8) {
+        const auto *args = reinterpret_cast<const Word *>(driver);
+        auto *result = reinterpret_cast<const Word **>(args[0]);
+        native<void>(base, 0x6aa094, result, args[1], args[2], args[3]);
+        styleFontText(base, result, true);
+        return false;
+    }
+    if (phase == 9) {
+        auto *heading = reinterpret_cast<const Word **>(driver);
+        native<void>(base, 0x6ab03c, heading, event);
+        const Word first = **heading;
+        *reinterpret_cast<Byte *>(base + 0xdf978c) = first >= 0xe000 && first <= 0xf8ff;
+        return false;
+    }
+    if (phase == 10 || phase == 11) {
+        auto *text = reinterpret_cast<const Word **>(driver);
+        if (phase == 10) native<void>(base, 0xb77e28, text, event);
+        else native<void>(base, 0x7a791c, text, reinterpret_cast<Word>(event));
+        if (styledChooser(base)) styleFontText(base, text, false);
+        return false;
+    }
+    if (phase == 12 || phase == 13) {
+        return createDisplayNameFont(base, driver, reinterpret_cast<Byte *>(event), phase - 12);
+    }
     Byte *app = field<Byte *>(driver, 0x44);
     if (!app || field<Word>(app, 0) != base + 0xcdd258) return false;
     Byte *board = field<Byte *>(app, 0x6c0);

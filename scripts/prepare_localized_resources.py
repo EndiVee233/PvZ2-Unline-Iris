@@ -20,7 +20,8 @@ ROOT = Path(__file__).resolve().parents[1]
 LOCALES = ('de-DE', 'en-US', 'es-ES', 'fr-FR', 'it-IT', 'pt-BR')
 PILOT_GROUPS = ('PlantPeashooter', 'PlantSunflower', 'PlantWallnut', 'PlantCabbagepult')
 KEY = re.compile(r'^\[([^\]\r\n]+)\][ \t]*\n', re.M)
-TOKENS = re.compile(r'\{[^{}\r\n]+\}|%(?:\d+\$)?[-+#0 .\d]*[diuoxXfFeEgGcs%]|</?[A-Za-z][^>\r\n]*>')
+# Keep printf space flags without reading literal percentages such as "25% of" as arguments.
+TOKENS = re.compile(r'\{[^{}\r\n]+\}|%(?! +[A-Za-z]{2})(?:\d+\$)?[-+#0 .\d]*[diuoxXfFeEgGcs%]|</?[A-Za-z][^>\r\n]*>')
 
 
 def parse_strings(text):

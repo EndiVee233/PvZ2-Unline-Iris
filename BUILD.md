@@ -55,11 +55,12 @@ Iris 使用 EN 1.6.257161 的原生引擎，将内置扩展包验证并解压到
 
 | 简体中文界面 | 字体来源 |
 | --- | --- |
-| 按钮、玩家名牌、教程提示、世界地图普通弹窗 | `FZY4JW.TTF` |
-| 关卡标题 | `FZKATJW.TTF` |
-| 星系页世界名 | `FZSEJW.TTF` |
+| 主菜单及玩家管理标题、按钮、选卡、暂停、星系和奖励标题 | `FZSEJW.TTF` |
+| 玩家名牌、教程说明、确认框正文、图鉴和商店说明 | `FZY4JW.TTF` |
+| 关卡标题、开战倒数和波次警告 | `FZKATJW.TTF` |
 | 阳光、卡牌费用及 HUD 数字槽 | `FBUSV8C5EI.TTF` |
-| 显式标出说话者的戴夫、潘妮、僵王台词 | 依 Aster 的 NPC 配置使用 `BRIANNE.TTF`、`PICO.TTF`、`ASHLEYSCRIPT.TTF` |
+| 疯狂戴夫的台词 | `FZKATJW.TTF` |
+| 潘妮、僵王头像的台词 | `FZY4JW.TTF` |
 
 Iris 在共享字体槽中为选定文案指定字形，关卡号、玩家名等运行时填入的内容继续由原控件绘制。
 
@@ -71,6 +72,10 @@ python scripts/build_lite.py --jdk "$env:JAVA_HOME" --sdk "$env:ANDROID_HOME" --
 ```
 
 构建需要 JDK 21、Android SDK 34、Build Tools 34.0.0 和 NDK 27.0.12077973。将 `JAVA_HOME` 和 `ANDROID_HOME` 设为本机工具链目录，并按本机情况替换示例的 APK 路径。Aster 目录可用 `--cn-workspace` 指定。输出是本地签名 APK。签名密钥、素材和备份均位于已忽略的 `work/` 目录。
+
+使用 `--custom-font <本地 TTF 路径>` 可指定简体中文选卡页、旅程标题、暂停标题和音量标签的字体。其他按钮的字形来自 Aster 的 `FZKATJW.TTF`。旅程标题会在游戏填入玩家名后替换其中的 ASCII 字形。
+
+简体中文构建默认使用 `src/locales/zh-CN.json`。可用 `--zh-cn <JSON 路径>` 测试另一份译文。修改文本时保留键名和格式占位符。
 
 ## 单独编译恢复的原生代码
 

@@ -17,7 +17,9 @@ import xml.etree.ElementTree as ET
 from prepare_baseline import OBB, ROOT, SOURCE, SOURCE_SHA256, sha256
 from prepare_localized_resources import LOCALES, apply_overlay, atlas_path, box, locale_path, tokens, values_of
 from rsb_local import ResourceBundle
-from iris_chinese_fonts import prepare_fonts
+from iris_chinese_fonts import (
+    PAUSE_LABELS, STORE_PRODUCT_COPY, STORE_PROFILE_CAPTIONS, button_caption, chooser_caption, prepare_fonts,
+)
 from iris_desktop_input import patch_native as patch_input_native
 from iris_speed_art import HUD_ATLASES, aster_icons, port_speed_art
 from recovery_compile import RECOVERED_JAVA, baseline_classpath
@@ -188,7 +190,7 @@ def hide_google_art(bundle, decoder, updates):
         updates.setdefault(pool, {})[path] = texture
 
 
-def chinese_expansion(standard, cn_apk, read_index, write_index):
+def chinese_expansion(standard, cn_apk, read_index, write_index, custom_font=None, *, zh_cn=None):
     from index_texture_prefetch import ResourceZip
 
     stream = ResourceZip(cn_apk)
@@ -204,17 +206,32 @@ def chinese_expansion(standard, cn_apk, read_index, write_index):
         path = locale_path('en-US')
         group = standard.group_for(path)
         english = standard.read(group, path)
-        translations = {key: chinese[key] for key, value in values_of(english.decode('utf-16')).items()
+        english_values = values_of(english.decode('utf-16'))
+        translations = {key: chinese[key] for key, value in english_values.items()
                         if chinese.get(key) and tokens(chinese[key]) == tokens(value)}
+        if custom_font is not None:
+            for key, value in english_values.items():
+                if button_caption(key) or chooser_caption(key) or key in PAUSE_LABELS:
+                    translations.setdefault(key, value)
+        else:
+            # Product names and descriptions can remain English in the Chinese locale.
+            for key, value in english_values.items():
+                if key in STORE_PROFILE_CAPTIONS or STORE_PRODUCT_COPY.fullmatch(key):
+                    translations.setdefault(key, value)
         translations.update(
-            SETTINGS_HELP_TITLE='语言', SETTINGS_HELP_URL=HELP_LINK,
             SETTINGS_BUILDVERSION_TITLE='版本信息', SETTINGS_DISPLAY_VERSION='版本',
             SETTINGS_DISPLAY_PCPID='玩家 ID', TUTORIAL_LEVEL_NAME='{PLAYER}的房子 - 第{LEVEL_NUMBER}天',
-            MAINMENU_CLICK_TO_ADD_PLAYER='<点击添加玩家>', PAUSED_HEADER='游戏暂停',
+            MAINMENU_CLICK_TO_ADD_PLAYER='<点击添加玩家>', MAINMENU_PLAY='开始游戏', PAUSED_HEADER='游戏暂停',
         )
+        if zh_cn is not None:
+            apply_overlay(english, zh_cn)  # validate user text before the font pass adds glyph aliases
+            translations.update(zh_cn)
+            translations = {key: translations[key] for key in english_values if key in translations}
+        # This entry opens the offline language picker.
+        translations.update(SETTINGS_HELP_TITLE='语言', SETTINGS_HELP_URL=HELP_LINK)
 
         fonts = donor('init')
-        replacements = prepare_fonts(standard, fonts, translations)
+        replacements = prepare_fonts(standard, fonts, translations, custom_font)
         updates = {group: {path: apply_overlay(english, translations)}, 'LoadingFonts': replacements}
     result = standard.replace(updates, set())
     verified = ResourceBundle(result, read_index, write_index)
@@ -268,7 +285,7 @@ def relocate_battle_coins(bundle, decoder, encoder, updates):
         updates.setdefault(group, {})[path] = data
 
 
-def package_expansion(source, destination, cn, rton, cn_apk, etc1tool):
+def package_expansion(source, destination, cn, rton, cn_apk, etc1tool, custom_font=None, *, zh_cn=None):
     sys.path[:0] = [str(rton.resolve()), str((cn / 'scripts').resolve())]
     from merge_legacy_pvp_resources import trie_read, trie_write
     from pyvz2rton import JSONDecoder, RTONDecoder
@@ -290,7 +307,7 @@ def package_expansion(source, destination, cn, rton, cn_apk, etc1tool):
         raise ValueError('Expansion entries failed verification')
     if any(bundle.groups[group][2] != verified.groups[group][2] for group in bundle.groups if group not in updates):
         raise ValueError('Unexpected expansion changes')
-    chinese = chinese_expansion(verified, cn_apk, trie_read, trie_write)
+    chinese = chinese_expansion(verified, cn_apk, trie_read, trie_write, custom_font, zh_cn=zh_cn)
     with ZipFile(destination, 'w', compression=ZIP_DEFLATED, compresslevel=1) as archive:
         archive.writestr(OBB, result)
         with archive.open('chinese.delta', 'w') as delta:
@@ -306,9 +323,15 @@ def main():
     parser.add_argument('--expansion', type=Path, default=ROOT / 'work/localized' / OBB)
     parser.add_argument('--cn-workspace', type=Path, default=ROOT.parent / 'PvZ2-Unline-Aster')
     parser.add_argument('--cn-apk', type=Path, required=True, help='local Aster APK with Chinese text and fonts')
+    parser.add_argument('--zh-cn', type=Path, default=ROOT / 'src/locales/zh-CN.json',
+                        help='UTF-8 JSON overrides for the Simplified Chinese locale')
+    parser.add_argument('--custom-font', type=Path, help='local TTF for Chinese chooser, trip title and pause labels')
     parser.add_argument('--rton-tools', type=Path, default=ROOT / 'tools/pyvz2/OBBEdit/libraries')
     parser.add_argument('--output', type=Path, default=ROOT / 'work/lite')
     args = parser.parse_args()
+    zh_cn = json.loads(args.zh_cn.read_text(encoding='utf-8-sig'))
+    if not isinstance(zh_cn, dict):
+        parser.error('--zh-cn must contain a JSON object')
     out = args.output.resolve()
     if out.exists():
         parser.error('Output already exists. Specify a new --output directory.')
@@ -336,7 +359,8 @@ def main():
             path.unlink()
     native = 'lib/armeabi-v7a/libPVZ2.so'
     ndk = args.ndk or sdk / 'ndk/27.0.12077973'
-    patch_input_native(decoded / native, ROOT / 'src/desktop-input/iris.cpp', ndk, out)
+    patch_input_native(decoded / native, ROOT / 'src/desktop-input/iris.cpp', ndk, out,
+                       custom_typefaces=args.custom_font is not None)
     bridge = decoded / 'lib/armeabi-v7a/libIrisSpeedFeedback.so'
     run(ndk / 'toolchains/llvm/prebuilt/windows-x86_64/bin/clang++.exe',
         '--target=armv7a-linux-androideabi21', '-Os', '-shared', '-fPIC', '-fno-exceptions',
@@ -344,7 +368,7 @@ def main():
         ROOT / 'src/desktop-input/speed_feedback.cpp', '-ldl', '-o', bridge)
     size, digest, zh_size, zh_digest = package_expansion(
         args.expansion, decoded / 'assets/extobb.save', args.cn_workspace, args.rton_tools,
-        args.cn_apk, sdk / 'platform-tools/etc1tool.exe')
+        args.cn_apk, sdk / 'platform-tools/etc1tool.exe', args.custom_font, zh_cn=zh_cn)
     (decoded / 'assets/data.save').unlink()
 
     spec = out / 'ExpansionSpec.java'

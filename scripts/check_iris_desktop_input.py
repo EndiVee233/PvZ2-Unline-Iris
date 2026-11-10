@@ -15,9 +15,10 @@ from unicorn.arm_const import (
 )
 
 from iris_desktop_input import (
-    BOARD_CLEAR, COIN_DRAW_EXIT, COIN_DRAW_HOOK, COIN_PLUS_READS, COIN_SELECTION_PENDING,
-    PAYLOAD_VADDR, POWERUP_ACTIVATE, POWERUP_SELECT_HOOK, SPEED_DRAW_HOOK, SPEED_STATE, SPRITE_HOOK,
-    TIME_CONFIG,
+    ARM_NOP, AUTO_PAUSE_CALLS, BOARD_CLEAR, COIN_DRAW_EXIT, COIN_DRAW_HOOK, COIN_PLUS_READS, COIN_SELECTION_PENDING,
+    CHOOSER_COINS_FORMAT, CHOOSER_HEADING, CHOOSER_PACKET_COPY, DISPLAY_NAME_FONTS, PAYLOAD_VADDR, POWERUP_ACTIVATE,
+    POWERUP_SELECT_HOOK, PRIME_FONT_INIT, SPEED_DRAW_HOOK, SPEED_STATE, SPRITE_HOOK, TIME_CONFIG, TRIP_FORMAT,
+    TYPEFACE_CALLS,
 )
 from prepare_baseline import NATIVE
 
@@ -50,6 +51,7 @@ def check(image, base):
         cpu.mem_write(address, struct.pack(f'<{len(values)}I', *values))
 
     assert all(read(base + address) == 0xE3A00000 for address in COIN_PLUS_READS)
+    assert all(read(base + address) == ARM_NOP for address in AUTO_PAUSE_CALLS)
 
     def string(address):
         return bytes(cpu.mem_read(address, 48)).split(b'\0')[0]
@@ -114,6 +116,8 @@ def check(image, base):
         0x3761EC: lambda _, value, *a: write(CONFIG + 0x28, value),
         POWERUP_ACTIVATE: lambda powerup, *a: calls.append(('activate power-up', powerup)),
         0x2BD798: lambda *_: calls.append('close pause menu'),
+        0x1755F4: lambda *_: calls.append('open pause menu'),
+        0x9C49A0: lambda *_: calls.append('finish board lifecycle callback'),
         0x17D1BC: lambda _, paused, *a: calls.append(('set paused', paused)),
         0x192A1C: lambda *_: calls.append('cancel'),
         0x9E8340: lambda *_: None,
@@ -333,6 +337,10 @@ def check(image, base):
     cpu.mem_write(BOARD + 0x671, bytes([1]))
     write(MANAGER + 0xAC, MANAGER + 0x200)
     write(MANAGER + 0x208, BUTTON)
+    write(BOARD + 0xA8, 3)  # WSA seed chooser, with the same pause modal.
+    draw_speed()
+    assert not calls
+    write(BOARD + 0xA8, 4)
     check_paused_speed_draw(BUTTON)
     send(6, 50)
     send(0, 555, 32)
@@ -366,6 +374,16 @@ def check(image, base):
     send(3, 555, 32)
     assert read(CONFIG + 0x28) == 0x3F800000 and not calls
     assert read(feedback) == 0
+
+    for listener in (0x1757A8, 0x176DA4):
+        cpu.reg_write(UC_ARM_REG_R0, BOARD)
+        run(listener)
+        assert calls == ['finish board lifecycle callback']
+        calls.clear()
+    cpu.reg_write(UC_ARM_REG_R0, BOARD)
+    run(0x17D41C)  # Explicit pause remains routed to the original menu.
+    assert calls == ['open pause menu', 'finish board lifecycle callback']
+    calls.clear()
 
     send(0, 555, 32)
     draw_speed()
@@ -448,6 +466,74 @@ def check(image, base):
     check_coin_draw(26064, 127)
     check_coin_draw(26128, 255)
     check_coin_draw(30224, 0)
+
+    if read(base + TRIP_FORMAT) != TYPEFACE_CALLS[TRIP_FORMAT]:
+        destination = PACKET + 0x700
+        buffer = destination + 0x20
+
+        def text_result(out, *characters):
+            assert out == destination
+            write(out, buffer)
+            write(buffer - 12, len(characters))
+            write(buffer, *characters, 0)
+
+        def font_call(hook, argument=0):
+            cpu.reg_write(UC_ARM_REG_R0, destination)
+            cpu.reg_write(UC_ARM_REG_R1, argument)
+            run(hook, base + hook + 4)
+
+        callbacks[base + 0x6AA094] = lambda out, code, *a: text_result(out, ord('A'), ord(' '), code)
+        callbacks[base + 0x6AB03C] = lambda out, code, *a: text_result(out, code)
+        callbacks[base + 0xB77E28] = lambda out, code, *a: text_result(out, code)
+        callbacks[base + 0x7A791C] = lambda out, code, *a: text_result(out, code)
+        callbacks[base + 0xB77320] = lambda out, text, size, _: text_result(
+            out, *struct.unpack(f'<{size}I', cpu.mem_read(text, size * 4)))
+        for original, expected in ((0xF880, 0xF841), (0xE100, ord('A'))):
+            font_call(TRIP_FORMAT, original)
+            assert read(buffer) == expected and read(buffer + 8) == original
+        write(BOARD + 0xA8, 3)
+        font_call(CHOOSER_HEADING, 0xE100)
+        for hook in (CHOOSER_PACKET_COPY, CHOOSER_COINS_FORMAT):
+            font_call(hook, ord('5'))
+            assert read(buffer) == 0xF835
+        write(BOARD + 0xA8, 4)
+        font_call(CHOOSER_PACKET_COPY, ord('5'))
+        assert read(buffer) == ord('5')
+
+    descriptor = PACKET + 0x800
+    font_slot = descriptor + 0x300
+    write(font_slot, BUTTON)
+
+    def font_size(value):
+        return struct.unpack('<I', struct.pack('<f', value))[0]
+
+    def create_font(factory, desc, *_):
+        assert factory == font_slot and desc == descriptor
+        calls.append(read(desc + 0x200))
+        return TYPE if len(calls) == 1 else BUTTON
+
+    callbacks[base + 0xA315BC] = create_font
+    for index, ((init, _), (create, _), (load_font, _)) in enumerate(DISPLAY_NAME_FONTS):
+        size = (11, 24)[index]
+        reduced = max(9, size - 3)
+        cpu.reg_write(UC_ARM_REG_R3, size)
+        run(init, base + PRIME_FONT_INIT + 4)
+        assert cpu.reg_read(UC_ARM_REG_R3) == reduced
+        write(descriptor + 0x200, font_size(reduced))
+        cpu.reg_write(UC_ARM_REG_R0, font_slot)
+        cpu.reg_write(UC_ARM_REG_R1, descriptor)
+        run(create, base + create + 4)
+        assert calls == [font_size(size), font_size(reduced)]
+        assert read(descriptor + 0x200) == font_size(reduced)
+        assert cpu.reg_read(UC_ARM_REG_R0) == BUTTON
+        calls.clear()
+        result_register = (UC_ARM_REG_R1, UC_ARM_REG_R4)[index]
+        for icon_width in ((0, 45) if index else (0,)):
+            cpu.reg_write(UC_ARM_REG_R0, font_slot)
+            cpu.reg_write(UC_ARM_REG_R5, icon_width)
+            run(load_font, base + load_font + 4)
+            assert cpu.reg_read(result_register) == (TYPE if not index or icon_width else BUTTON)
+
     cpu.reg_write(UC_ARM_REG_R0, powerup)
     run(POWERUP_SELECT_HOOK, base + POWERUP_SELECT_HOOK + 4)
     assert calls == [('activate power-up', powerup)] and read(selection) == 1
