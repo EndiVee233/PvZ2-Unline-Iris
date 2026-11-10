@@ -24,7 +24,9 @@ public class AndroidUIEventManager implements GestureDetector.OnGestureListener,
     private static final int EVENT_PADDING = 0xDEADBEEF;
     private static final int BATCH_HEADER_BYTES = 16;
     private static final int DESKTOP_POINTER_ID = 0x7ffffffd;
-    private static final int DESKTOP_HOVER = 5;
+    static final int DESKTOP_HOVER = 5;
+    static final int DESKTOP_CANCEL = 100;
+    static final int DESKTOP_PLANTFOOD_AT_POINTER = 101;
     private static final int DESKTOP_COMMAND = 6;
     private static final float SCALE_THRESHOLD = 5.0E-4f;
     public static final int TEXTINPUT_BACKSPACE = 3;
@@ -40,6 +42,8 @@ public class AndroidUIEventManager implements GestureDetector.OnGestureListener,
     private float startScale;
     private float prevScaleMag;
     boolean mbAppHasFocus;
+    private float desktopX = -1;
+    private float desktopY = -1;
     Map<Integer, UITouchTracker> mTouches = new TreeMap<>();
     LinkedList<UIEvent> mEvents = new LinkedList<>();
 
@@ -301,6 +305,7 @@ public class AndroidUIEventManager implements GestureDetector.OnGestureListener,
 
     public void HandleLostFocus() {
         this.mbAppHasFocus = false;
+        desktopX = desktopY = -1;
         for (UITouchTracker tracker : this.mTouches.values()) {
             tracker.MarkAsCancelled();
             EnqueueEvent(new UITouchEvent(tracker));
@@ -374,9 +379,16 @@ public class AndroidUIEventManager implements GestureDetector.OnGestureListener,
         }
         UITouchTracker touch = new UITouchTracker();
         touch.mPointerId = DESKTOP_POINTER_ID;
-        touch.phase = action == DESKTOP_HOVER ? DESKTOP_HOVER : DESKTOP_COMMAND;
-        touch.X = touch.previousX = action == DESKTOP_HOVER ? x : action;
-        touch.Y = touch.previousY = y;
+        if (action == DESKTOP_HOVER || action == DESKTOP_PLANTFOOD_AT_POINTER) {
+            desktopX = x;
+            desktopY = y;
+        }
+        boolean hover = action == DESKTOP_HOVER;
+        touch.phase = hover ? DESKTOP_HOVER : DESKTOP_COMMAND;
+        touch.X = hover ? x : action;
+        touch.Y = hover ? y : 0;
+        touch.previousX = desktopX;
+        touch.previousY = desktopY;
         touch.mTimestampMS = GetTimeStamp();
         EnqueueEvent(new UITouchEvent(touch));
     }

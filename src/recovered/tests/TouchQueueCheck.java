@@ -47,12 +47,17 @@ public final class TouchQueueCheck {
 
         expect(manager.ProcessEvents(out) && out.getInt(0) == 1, "text pending");
         out.position(HEADER_BYTES);
-        touch(out, 6, 0x7ffffffe, 36, 0, 36, 0);
+        touch(out, 6, 0x7ffffffe, 36, 0, -12, 34);
 
         expect(!manager.ProcessEvents(out) && out.getInt(0) == 1, "text drained");
         out.position(HEADER_BYTES);
         expect(out.getInt() == 6 && out.getInt() == 0 && out.getInt() == 3, "text tag, action and length");
         expect(out.getInt() == 0x00434241, "UTF-8 bytes and alignment");
+
+        manager.QueueIrisDesktop(AndroidUIEventManager.DESKTOP_PLANTFOOD_AT_POINTER, 110, 70);
+        expect(!manager.ProcessEvents(out) && out.getInt(0) == 1, "middle-click command");
+        out.position(HEADER_BYTES);
+        touch(out, 6, 0x7ffffffe, 101, 0, 110, 70);
 
         AndroidUIEventManager.UITouchTracker tracker = manager.new UITouchTracker();
         tracker.mPointerId = 3;
@@ -64,6 +69,11 @@ public final class TouchQueueCheck {
         expect(!manager.ProcessEvents(out) && out.getInt(0) == 1, "cancel queued");
         out.position(HEADER_BYTES);
         touch(out, 4, 4, 18, 19, 18, 19);
+        manager.HandleGotFocus();
+        manager.QueueIrisDesktop(36, 0, 0);
+        expect(!manager.ProcessEvents(out) && out.getInt(0) == 1, "command after regaining focus");
+        out.position(HEADER_BYTES);
+        touch(out, 6, 0x7ffffffe, 36, 0, -1, -1);
         System.out.println("Java touch queue, text, focus, and overflow checks passed");
     }
 }

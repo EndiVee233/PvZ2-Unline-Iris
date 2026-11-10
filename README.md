@@ -2,14 +2,14 @@
 
 Iris 基于《植物大战僵尸 2》北美版 1.6.257161，面向 Windows Subsystem for Android 和支持 ARM32 的 Android 环境。项目提供离线构建脚本和逐步恢复的 Java、C++ 源码。
 
-[构建说明](BUILD.md) · [恢复进度](RECOVERY_STATUS.md) · [来源与权利声明](NOTICE.md) · [中文版 Aster](https://github.com/EndiVee233/PvZ2-Unline-Aster)
+[下载 APK](https://github.com/EndiVee233/PvZ2-Unline-Iris/releases) · [构建说明](BUILD.md) · [恢复进度](RECOVERY_STATUS.md) · [来源与权利声明](NOTICE.md) · [中文版 Aster](https://github.com/EndiVee233/PvZ2-Unline-Aster)
 
 ## 特性
 
 - 内置扩展包首次启动后解压到应用私有目录，存档也写入应用私有目录。
 - 游戏启动和本地流程绕过 Google Play 登录、云存档、旧扩展下载器及在线支付。
 - 语言可从设置中切换，支持英语、德语、西班牙语、法语、意大利语、巴西葡萄牙语和简体中文。
-- Iris 桌面输入桥接鼠标悬停、右键取消和关卡内快捷键。
+- Iris 桌面输入支持卡槽快捷键、鼠标悬停与种植十字提示、右键取消、中键能量豆、加速和收集。[键位与实现](docs/source-recovery.md#桌面键鼠)
 - 包名沿用 `com.ea.game.pvz2_na`。升级安装需与已安装 APK 使用同一签名。
 
 ## 从源码构建

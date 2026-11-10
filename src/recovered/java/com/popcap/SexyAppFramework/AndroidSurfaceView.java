@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
+import java.util.BitSet;
 import javax.microedition.khronos.egl.EGL10;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.egl.EGLContext;
@@ -29,9 +30,9 @@ import javax.microedition.khronos.opengles.GL10;
 public class AndroidSurfaceView extends GLSurfaceView {
     public static final int DEBUG_CHECK_GL_ERROR = 1;
     public static final int DEBUG_LOG_GL_CALLS = 2;
-    private static final int DESKTOP_HOVER = 5;
-    private static final int DESKTOP_CANCEL = 100;
     private boolean irisRightDown;
+    private boolean irisMiddleDown;
+    private final BitSet irisKeysDown = new BitSet();
     private AndroidRenderer mAndroidRenderer;
     private EGL10 mEgl;
     private int mGLESVersionSupported;
@@ -67,16 +68,31 @@ public class AndroidSurfaceView extends GLSurfaceView {
 
     private boolean irisPointer(MotionEvent motionEvent) {
         AndroidUIEventManager androidUIEventManager = this.mUIEventManager;
-        if (androidUIEventManager == null) {
+        if (androidUIEventManager == null || !motionEvent.isFromSource(InputDevice.SOURCE_CLASS_POINTER)) {
             return false;
         }
         int buttonState = motionEvent.getButtonState();
+        if ((buttonState & MotionEvent.BUTTON_TERTIARY) != 0) {
+            if (!irisMiddleDown) {
+                irisMiddleDown = true;
+                androidUIEventManager.QueueIrisDesktop(AndroidUIEventManager.DESKTOP_PLANTFOOD_AT_POINTER,
+                        motionEvent.getX(), motionEvent.getY());
+            }
+            return true;
+        }
+        if (irisMiddleDown) {
+            irisMiddleDown = false;
+            if (motionEvent.getActionMasked() == MotionEvent.ACTION_UP
+                    || motionEvent.getActionMasked() == MotionEvent.ACTION_BUTTON_RELEASE) {
+                return true;
+            }
+        }
         if ((buttonState & MotionEvent.BUTTON_SECONDARY) != 0) {
             if (this.irisRightDown) {
                 return true;
             }
             this.irisRightDown = true;
-            androidUIEventManager.QueueIrisDesktop(DESKTOP_CANCEL, 0.0f, 0.0f);
+            androidUIEventManager.QueueIrisDesktop(AndroidUIEventManager.DESKTOP_CANCEL, 0.0f, 0.0f);
             return true;
         }
         if (this.irisRightDown) {
@@ -86,16 +102,21 @@ public class AndroidSurfaceView extends GLSurfaceView {
                 return true;
             }
         }
-        if (buttonState != 0 || !motionEvent.isFromSource(InputDevice.SOURCE_CLASS_POINTER) || motionEvent.getActionMasked() != MotionEvent.ACTION_HOVER_MOVE) {
+        if (buttonState != 0 || motionEvent.getActionMasked() != MotionEvent.ACTION_HOVER_MOVE) {
             return false;
         }
-        androidUIEventManager.QueueIrisDesktop(DESKTOP_HOVER, motionEvent.getX(), motionEvent.getY());
+        androidUIEventManager.QueueIrisDesktop(AndroidUIEventManager.DESKTOP_HOVER, motionEvent.getX(), motionEvent.getY());
         return true;
     }
 
     @Override
     public boolean dispatchGenericMotionEvent(MotionEvent motionEvent) {
         return irisPointer(motionEvent) || super.dispatchGenericMotionEvent(motionEvent);
+    }
+
+    @Override
+    public boolean onHoverEvent(MotionEvent motionEvent) {
+        return irisPointer(motionEvent) || super.onHoverEvent(motionEvent);
     }
 
     @Override
@@ -272,23 +293,30 @@ public class AndroidSurfaceView extends GLSurfaceView {
             case KeyEvent.KEYCODE_2:
             case KeyEvent.KEYCODE_3:
             case KeyEvent.KEYCODE_4:
+            case KeyEvent.KEYCODE_A:
+            case KeyEvent.KEYCODE_B:
             case KeyEvent.KEYCODE_D:
             case KeyEvent.KEYCODE_E:
             case KeyEvent.KEYCODE_F:
+            case KeyEvent.KEYCODE_M:
+            case KeyEvent.KEYCODE_N:
             case KeyEvent.KEYCODE_Q:
             case KeyEvent.KEYCODE_R:
+            case KeyEvent.KEYCODE_V:
             case KeyEvent.KEYCODE_W:
             case KeyEvent.KEYCODE_X:
             case KeyEvent.KEYCODE_Z:
             case KeyEvent.KEYCODE_SPACE:
+                if (InEvent.getRepeatCount() != 0) {
+                    return irisKeysDown.get(InKeyCode) || super.onKeyDown(InKeyCode, InEvent);
+                }
+                irisKeysDown.clear(InKeyCode);
                 SexyAppFrameworkActivity sexyAppFrameworkActivityInstance = SexyAppFrameworkActivity.instance();
                 if (sexyAppFrameworkActivityInstance != null && !sexyAppFrameworkActivityInstance.irisKeyboardShowing() && InEvent.hasNoModifiers()) {
-                    if (InEvent.getRepeatCount() != 0) {
-                        return true;
-                    }
                     AndroidUIEventManager androidUIEventManager = this.mUIEventManager;
                     if (androidUIEventManager != null) {
                         androidUIEventManager.QueueIrisDesktop(InKeyCode, 0.0f, 0.0f);
+                        irisKeysDown.set(InKeyCode);
                         return true;
                     }
                 }
@@ -298,6 +326,24 @@ public class AndroidSurfaceView extends GLSurfaceView {
             return true;
         }
         return super.onKeyDown(InKeyCode, InEvent);
+    }
+
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        if (keyCode >= 0 && irisKeysDown.get(keyCode)) {
+            irisKeysDown.clear(keyCode);
+            return true;
+        }
+        return super.onKeyUp(keyCode, event);
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasWindowFocus) {
+        super.onWindowFocusChanged(hasWindowFocus);
+        if (!hasWindowFocus) {
+            irisKeysDown.clear();
+            irisRightDown = irisMiddleDown = false;
+        }
     }
 
     @Override
@@ -390,6 +436,7 @@ public class AndroidSurfaceView extends GLSurfaceView {
                 return;
             }
             this.mGLView.Native_onDrawFrame();
+            IrisSpeedFeedback.frame();
             if (mFirstDraw) {
                 mFirstDraw = false;
                 SexyAppFrameworkActivity.instance().RemoveSplashScreen();

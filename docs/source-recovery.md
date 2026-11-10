@@ -2,6 +2,34 @@
 
 在 Iris 的 `en` 分支进行。以原始北美 APK 1.6.257161 的 DEX、Smali 和 `libPVZ2.so` 为依据，用本地 `work/iris-10-wsa/PvZ2-Unline-Iris.apk` 对照 Iris 已有的离线与桌面输入行为。
 
+## 桌面键鼠
+
+| 输入 | 北美版行为 |
+| --- | --- |
+| `1–4`、`Q/W/E/R` | 选择第 1–8 个卡槽 |
+| `Z/X` | 选前一张或后一张卡 |
+| `D/F` | 铲子、选择能量豆 |
+| 鼠标中键 | 在指针下的有效草坪位置尝试使用能量豆 |
+| `B/N/M` | 捏、弹、电三种金手指，分别匹配 `PowerupPinchZombie`、`PowerupFlickZombie` 和 `PowerupWizardFinger`。剪刀手激活后可单击僵尸 |
+| 空格 | 暂停或继续 |
+| `V` 或战斗右上角双箭头 | 切换 2 倍速 |
+| `A`、悬停 | 一次收集场上物品，或按原命中范围收集鼠标经过的物品 |
+| 鼠标悬停、右键 | 等待中的光标跟随并显示种植十字提示，右键取消等待选择 |
+
+Android 视图从通用指针事件和 `onHoverEvent` 接收悬停，通过原事件队列送出 phase 5 和 phase 6。普通触屏 phase 0–4 继续走原分派。选卡从原触摸命中测试的 UI 注册桶 `0x18` 枚举当前可见的 `SeedPacket`，再模拟原控件的按下与释放。快捷键保留命中、遮挡、金币消耗和原按钮限制。输入法开启时保留原按键分发。空格只在原暂停菜单位于顶层时关闭菜单 `0x002bd798` 并解除战场暂停 `0x0017d1bc`。
+
+原版 HUD 的金手指容器通过 `UIPowerupHolder` 获取，子控件向量在 `+0x40/+0x44`，类型引用在 `PowerupUI+0xf0`。收集项来自原战场对象注册桶 `0x20`，由原收集触摸回调 `0x001d1d48` 完成。悬停减去棋盘控件的绝对原点，再应用原触摸缩放。等待光标使用原种植提示函数 `0x0018d628` 和光标本身的绘制回调，活动触点光标继续由原循环处理。原生补丁新增独立的 RX 段，原游戏数据段保持不可执行。
+
+北美原版的四套 HUD 布局和资源表中没有倍速按钮。Iris 从 Aster 的 `uicommon.rsb.smf` 提取双箭头普通和按下图像，写入北美三档 HUD 图集的空白区域，保留原 RSG 压缩方式和 ETC1/A8 格式。资源表仅插入新增图像记录并调整计数，原有 RTON 标记和字符串索引逐字节保留。按钮在可操作战斗中绘制在暂停左侧，使用原触摸坐标。按钮和 `V` 共用原 `SetTimeScale`，使用原暂停入口的 NPC 对话状态检查，退出战场时恢复此前倍率。
+
+暂停菜单打开时，双箭头随战斗界面变暗，并保留当前倍率的外观。暂停和 NPC 对话期间都锁定倍率。每次成功切换都播放对应的 Aster 音效，并显示 150 毫秒的白色闪光。音效音量取自游戏设置。
+
+新开的战斗使用右下方金币栏，选卡界面的开始按钮保留在上方。更新前保存的进行中关卡从原 `save_UIWidgets.rton` 恢复控件坐标。战斗金币栏的加号绘制、命中和点击入口均已关闭。划过收集沿用原收集回调，先把悬停坐标换算成与拖动一致的棋盘坐标。剪刀手激活时用原生按下和抬起识别单击，经 Android 驱动的原捏合入口 `0x009e8a08`、控件命中和棋盘缩放换算后，再交给原版目标筛选和效果流程。
+
+金币栏开战后显示约两秒，再用约两秒淡出。余额变化或金手指进入原生选中状态时，金币栏快速淡入并重新计时。图标、底板和数字共用透明度，动画计时独立于战斗倍率。
+
+检查命令为 `python scripts/check_iris_desktop_input.py <重建 APK>`。在两个加载基址执行 APK 中的 ARM 跳板和编译载荷，用受控回调覆盖原触摸分派、卡槽、金手指选择、收集、暂停恢复、中键边界、悬停坐标、十字与光标绘制、按钮和 `V` 的倍率切换及恢复。游戏内的 WSA 行为需实机验收。
+
 ## 第三轮
 
 - [SexyAppFrameworkActivity.java](../src/recovered/java/com/popcap/SexyAppFramework/SexyAppFrameworkActivity.java)、[AndroidSplashScreen.java](../src/recovered/java/com/popcap/SexyAppFramework/AndroidSplashScreen.java)和 [AndroidAssetUtils.java](../src/recovered/java/com/popcap/SexyAppFramework/AndroidAssetUtils.java)及内部类由 Java 构建。原有离线扩展包路径和桌面键盘状态桥接随 Activity 移入源码。累计 28 个类由 Java 构建，APK 总计 1,495 个 DEX 类。

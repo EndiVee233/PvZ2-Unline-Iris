@@ -81,7 +81,7 @@ class ResourceBundle:
     def texture(self, group, path):
         return struct.unpack_from('<4I', self.data, self.texture_row(group, path))
 
-    def replace(self, replacements, rgba_paths):
+    def replace(self, replacements, rgba_paths, *, preserve_compression=()):
         result = bytearray(self.data)
         for group, updates in replacements.items():
             index, row, block, entries = self.groups[group]
@@ -107,17 +107,21 @@ class ResourceBundle:
                 raise ValueError(f'RSG table exceeds header for {group}')
             head[start:start + len(table)] = table
             struct.pack_into('<I', head, 72, len(table))
-            plain, textures = (align(section) for section in sections)
-            # Keep both RSG sections uncompressed. Mirror their offsets and sizes
-            # into the outer RSB tables that allocate the runtime resource pools.
-            struct.pack_into('<I', head, 16, u32(head, 16) & ~3)
-            struct.pack_into('<II', head, 28, len(plain), len(plain))
-            struct.pack_into('<III', head, 40, len(head) + len(plain), len(textures), len(textures))
+            plain_raw, textures_raw = (align(section) for section in sections)
+            flags = u32(head, 16)
+            if group not in preserve_compression:
+                flags &= ~3
+            plain = align(zlib.compress(plain_raw)) if plain_raw and flags & 2 else plain_raw
+            textures = align(zlib.compress(textures_raw)) if textures_raw and flags & 1 else textures_raw
+            # Both directories store the compressed offsets and uncompressed sizes.
+            struct.pack_into('<I', head, 16, flags)
+            struct.pack_into('<II', head, 28, len(plain), len(plain_raw))
+            struct.pack_into('<III', head, 40, len(head) + len(plain), len(textures), len(textures_raw))
             payload = head + plain + textures
             result.extend(bytes(-len(result) % 4096))
             struct.pack_into('<II', result, row + 128, len(result), len(payload))
             result[row + 140:row + 176] = head[16:36] + head[32:36] + head[40:52]
             pool = self.pool_start + index * self.pool_stride
-            struct.pack_into('<II', result, pool + 128, len(head) + len(plain), len(textures))
+            struct.pack_into('<II', result, pool + 128, len(head) + len(plain_raw), len(textures_raw))
             result.extend(payload)
         return result

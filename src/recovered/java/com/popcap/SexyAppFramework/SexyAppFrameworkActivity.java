@@ -151,6 +151,7 @@ public class SexyAppFrameworkActivity extends BaseGameActivity {
     public void onResume() {
         Log.i(TAG, "onResume");
         super.onResume();
+        IrisSpeedFeedback.resume(this);
         if (this.mGLView != null && this.mGameApp != null) {
             this.mGLView.onResume();
             this.mGameApp.onActivityResume();
@@ -161,6 +162,7 @@ public class SexyAppFrameworkActivity extends BaseGameActivity {
     @Override
     public void onPause() {
         Log.i(TAG, "onPause");
+        IrisSpeedFeedback.pause();
         super.onPause();
         if (this.mGLView != null && this.mGameApp != null) {
             this.mGameApp.onActivityPause();
@@ -180,6 +182,7 @@ public class SexyAppFrameworkActivity extends BaseGameActivity {
     @Override
     public void onDestroy() {
         Log.i(TAG, "onDestroy");
+        IrisSpeedFeedback.shutdown();
         super.onDestroy();
         if (this.mGameApp != null) {
             this.mGameApp.onActivityDestroy();

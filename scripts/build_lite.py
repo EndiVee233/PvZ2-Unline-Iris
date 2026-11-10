@@ -3,13 +3,15 @@
 import argparse
 from contextlib import closing
 import hashlib
+from io import BytesIO, StringIO
+import json
 from pathlib import Path
 import re
 import shutil
 import struct
 import subprocess
 import sys
-from zipfile import ZIP_DEFLATED, ZipFile
+from zipfile import ZIP_DEFLATED, ZIP_STORED, ZipFile
 import xml.etree.ElementTree as ET
 
 from prepare_baseline import OBB, ROOT, SOURCE, SOURCE_SHA256, sha256
@@ -17,6 +19,7 @@ from prepare_localized_resources import LOCALES, apply_overlay, atlas_path, box,
 from rsb_local import ResourceBundle
 from iris_chinese_fonts import prepare_fonts
 from iris_desktop_input import patch_native as patch_input_native
+from iris_speed_art import HUD_ATLASES, aster_icons, port_speed_art
 from recovery_compile import RECOVERED_JAVA, baseline_classpath
 
 
@@ -236,10 +239,39 @@ def write_chinese_delta(stream, standard, chinese):
     stream.write(memoryview(chinese)[len(standard):])
 
 
-def package_expansion(source, destination, cn, rton, cn_apk):
+def relocate_battle_coins(bundle, decoder, encoder, updates):
+    for platform in ('ANDROID', 'IPAD', 'IPHONE', 'IPHONE5'):
+        path = f'PACKAGES\\UI_{platform}.RTON'
+        group = bundle.group_for(path)
+        source = BytesIO(bundle.read(group, path)[4:])
+        source.name = path
+        layout = json.loads(decoder(repairFiles=False).parse_root_object(source))
+        coin, = (item['objdata'] for item in layout['objects'] if 'UICoinBank' in item.get('aliases', []))
+        start, = (item['objdata'] for item in layout['objects'] if 'UIStartGameButton' in item.get('aliases', []))
+        if coin['Parent'] != 'UITopBar' or coin['Class'] != 'CoinBank':
+            raise ValueError(f'Unexpected battle coin bank in {path}')
+        if start['Parent'] == 'UICoinBank':
+            # Keep the seed chooser's Start button in its original top HUD area.
+            start.update(Parent='UITopBar', ParentAnchor='TopRight', ScalePositionOffset=True,
+                         PositionOffset={'x': coin['PositionOffset']['x'] - coin['VirtualWidth']
+                                             + start['PositionOffset']['x'],
+                                         'y': coin['PositionOffset']['y'] + start['PositionOffset']['y']})
+        # The phone bottom bars are shorter than the shovel, so anchor the
+        # coin bank above the tool from the shared bottom edge.
+        coin.update(Parent='UIBottomBar', ParentAnchor='BottomRight', Anchor='BottomRight',
+                    PositionOffset={'x': -14, 'y': -92})
+        data = encoder().encode_root_object(StringIO(json.dumps(layout)))
+        verified = BytesIO(data[4:])
+        verified.name = path
+        if json.loads(decoder(repairFiles=False).parse_root_object(verified)) != layout:
+            raise ValueError(f'Battle HUD failed round-trip in {path}')
+        updates.setdefault(group, {})[path] = data
+
+
+def package_expansion(source, destination, cn, rton, cn_apk, etc1tool):
     sys.path[:0] = [str(rton.resolve()), str((cn / 'scripts').resolve())]
     from merge_legacy_pvp_resources import trie_read, trie_write
-    from pyvz2rton import RTONDecoder
+    from pyvz2rton import JSONDecoder, RTONDecoder
 
     bundle = ResourceBundle(source.read_bytes(), trie_read, trie_write)
     updates = {}
@@ -249,7 +281,10 @@ def package_expansion(source, destination, cn, rton, cn_apk):
         original = bundle.read(group, path)
         updates[group] = {path: apply_overlay(original, {'SETTINGS_HELP_TITLE': title, 'SETTINGS_HELP_URL': HELP_LINK})}
     hide_google_art(bundle, RTONDecoder, updates)
-    result = bundle.replace(updates, set())
+    relocate_battle_coins(bundle, RTONDecoder, JSONDecoder, updates)
+    icons = aster_icons(cn_apk, trie_read, trie_write, RTONDecoder)
+    port_speed_art(bundle, RTONDecoder, JSONDecoder, icons, etc1tool, updates)
+    result = bundle.replace(updates, set(), preserve_compression=HUD_ATLASES)
     verified = ResourceBundle(result, trie_read, trie_write)
     if any(verified.read(group, path) != value for group, files in updates.items() for path, value in files.items()):
         raise ValueError('Expansion entries failed verification')
@@ -300,10 +335,16 @@ def main():
         for path in old_classes:
             path.unlink()
     native = 'lib/armeabi-v7a/libPVZ2.so'
-    patch_input_native(decoded / native, ROOT / 'src/desktop-input/iris.cpp',
-                       args.ndk or sdk / 'ndk/27.0.12077973', out)
+    ndk = args.ndk or sdk / 'ndk/27.0.12077973'
+    patch_input_native(decoded / native, ROOT / 'src/desktop-input/iris.cpp', ndk, out)
+    bridge = decoded / 'lib/armeabi-v7a/libIrisSpeedFeedback.so'
+    run(ndk / 'toolchains/llvm/prebuilt/windows-x86_64/bin/clang++.exe',
+        '--target=armv7a-linux-androideabi21', '-Os', '-shared', '-fPIC', '-fno-exceptions',
+        '-fno-rtti', '-nostdlib++', '-Wl,--no-undefined', '-Wl,-soname,libIrisSpeedFeedback.so',
+        ROOT / 'src/desktop-input/speed_feedback.cpp', '-ldl', '-o', bridge)
     size, digest, zh_size, zh_digest = package_expansion(
-        args.expansion, decoded / 'assets/extobb.save', args.cn_workspace, args.rton_tools, args.cn_apk)
+        args.expansion, decoded / 'assets/extobb.save', args.cn_workspace, args.rton_tools,
+        args.cn_apk, sdk / 'platform-tools/etc1tool.exe')
     (decoded / 'assets/data.save').unlink()
 
     spec = out / 'ExpansionSpec.java'
@@ -320,14 +361,18 @@ def main():
     run(jdk / 'javac.exe', '--release', '8', '-parameters', '-encoding', 'UTF-8',
         '-cp', f'{platform};{baseline_api}', '-d', classes,
         ROOT / 'src/lite/com/popcap/PvZ2/LiteRuntime.java',
+        recovered / 'IrisSpeedFeedback.java',
         *(recovered / f'{name}.java' for name in RECOVERED_JAVA), spec)
     run(jdk / 'jar.exe', 'cf', out / 'lite.jar', '-C', classes, '.')
     run(java, '-cp', tools / 'lib/d8.jar', 'com.android.tools.r8.D8', '--min-api', '21', '--lib', platform,
         '--classpath', baseline_api, '--force-passthrough-assertions:com.popcap.SexyAppFramework...',
         '--output', out, out / 'lite.jar')
     run(java, '-jar', apktool, 'b', '-p', out / 'framework', '-o', out / 'recompiled.apk', decoded)
-    with ZipFile(out / 'recompiled.apk', 'a') as package:
+    with ZipFile(out / 'recompiled.apk', 'a') as package, ZipFile(args.cn_apk) as donor:
         package.write(out / 'classes.dex', 'classes2.dex', compress_type=ZIP_DEFLATED)
+        for mode in ('on', 'off'):
+            name = f'assets/game-audio/fast-forward-{mode}.wav'
+            package.writestr(name, donor.read(name), compress_type=ZIP_STORED)
     run(tools / 'zipalign.exe', '-f', '4', out / 'recompiled.apk', out / 'aligned.apk')
     key = ROOT / 'work/signing/unline-lite.jks'
     if not key.exists():
