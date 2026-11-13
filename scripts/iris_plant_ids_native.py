@@ -6,6 +6,17 @@ import subprocess
 from native_payload import require_position_independent
 
 PLANT_IDS=json.loads((Path(__file__).resolve().parents[1]/'src/dark/plant-ids.json').read_text())
+PRIVATE_PLANT_IDS=json.loads((Path(__file__).resolve().parents[1]/'src/dark/private-plant-ids.json').read_text())
+STOCK_PLANT_NAMES=('sunflower peashooter wallnut tallnut bonkchoy cabbagepult melonpult cherry_bomb '
+       'coconutcannon gravebuster iceburg laser_bean potatomine repeater snapdragon spikeweed '
+       'threepeater torchwood kernelpult springbean snowpea chilibean splitpea lightningreed '
+       'peapod magnifyinggrass bloomerang holonut empea blover starfruit imitater jalapeno '
+       'wintermelon twinsunflower marigold spikerock powerlily squash citron powerplant '
+       'sunshroom pultshroom puffshroom scaredyshroom rotoshroom').split()
+GROWTH_PLANT_IDS={'sunshroom_grown':42,'sunshroom_stage3':42,
+                 'iris_iceshroom_stage2':52,'iris_iceshroom_stage3':52,
+                 'iris_fireshroom_stage2':53,'iris_fireshroom_stage3':53}
+ALL_PLANT_IDS={name:i for i,name in enumerate(STOCK_PLANT_NAMES,1)}|PLANT_IDS|PRIVATE_PLANT_IDS|GROWTH_PLANT_IDS
 
 def patch_plant_ids_native(path,source,ndk,out,*,trace=False):
     data=bytearray(path.read_bytes());hook=0x1628dc
@@ -22,7 +33,7 @@ def patch_plant_ids_native(path,source,ndk,out,*,trace=False):
         d=target-pc-8
         if d%2 or not -0x2000000<=d<0x2000000:raise ValueError('Plant enum branch out of range')
         return ((0xfa000000|((d&2)<<23)) if thumb else 0xea000000)|((d>>2)&0xffffff)
-    (out/'iris_plant_ids.inc').write_text(''.join(f' add(b,object,"{name}",{value});\n' for name,value in PLANT_IDS.items()))
+    (out/'iris_plant_ids.inc').write_text(''.join(f' add(b,object,"{name}",{value});\n' for name,value in (PLANT_IDS|PRIVATE_PLANT_IDS).items()))
     tools=ndk/'toolchains/llvm/prebuilt/windows-x86_64/bin'
     obj,blob,linker=[out/('iris-plant-ids'+e) for e in ('.o','.bin','.ld')]
     linker.write_text(f'SECTIONS {{ . = {entry}; .text : {{ *(.text.entry) *(.text*) *(.rodata*) }} /DISCARD/ : {{ *(.ARM.exidx*) *(.ARM.extab*) *(.comment*) }} }}')

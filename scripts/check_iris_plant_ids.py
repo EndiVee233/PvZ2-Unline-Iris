@@ -5,7 +5,7 @@ from pathlib import Path
 import struct
 from unicorn import Uc,UC_ARCH_ARM,UC_MODE_ARM,UC_HOOK_CODE
 from unicorn.arm_const import *
-from iris_plant_ids_native import PLANT_IDS
+from iris_plant_ids_native import PLANT_IDS,PRIVATE_PLANT_IDS
 
 STOCK=('sunflower peashooter wallnut tallnut bonkchoy cabbagepult melonpult cherry_bomb '
        'coconutcannon gravebuster iceburg laser_bean potatomine repeater snapdragon spikeweed '
@@ -70,7 +70,7 @@ def check(path):
     aliases={'sunshroom_grown':42,'sunshroom_stage3':42,
              'iris_iceshroom_stage2':52,'iris_iceshroom_stage3':52,
              'iris_fireshroom_stage2':53,'iris_fireshroom_stage3':53}
-    expected={name:i for i,name in enumerate(STOCK,1)}|PLANT_IDS
+    expected={name:i for i,name in enumerate(STOCK,1)}|PLANT_IDS|PRIVATE_PLANT_IDS
     for obj in (0xf10000,0xf11000):
         assert run(0x1628dc,obj)==obj
         for name,value in (expected|aliases).items():
@@ -81,7 +81,7 @@ def check(path):
     try:run(0x32cdf8,obj,key)
     except ValueError:pass
     else:raise AssertionError('Unknown keys must retain native rejection')
-    print('PASS: real ARM constructor, all 46 stock IDs unchanged, ten stable new IDs, '
+    print('PASS: real ARM constructor, all 46 stock IDs unchanged, ten stable new IDs, three hidden house IDs, '
           'growth aliases, native forward/reverse lookups, independent instances and unknown-key rejection')
 
 if __name__=='__main__':

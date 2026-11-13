@@ -364,6 +364,8 @@ def package_expansion(source, destination, cn, rton, cn_apk, etc1tool, custom_fo
         from iris_dark_finale import restore_finale_reward
         raw = restore_finale_reward(raw, cn_apk, trie_read, trie_write,
                                    RTONDecoder, JSONDecoder)
+        from iris_chooser_preview import restore_chooser_previews
+        raw = restore_chooser_previews(raw, trie_read, trie_write, RTONDecoder)
         from iris_dark_campaign import restore_campaign
         raw = restore_campaign(raw, cn_apk, trie_read, trie_write,
                                RTONDecoder, JSONDecoder)

@@ -42,6 +42,17 @@ def validate_preloads(bundle, decoder):
     dark,=[w for w in world_list['objects'][0]['objdata']['MapList'] if w['MapName']=='dark']
     map_groups=set(dark['WorldResources']['ResGroups'])
     types=read_rton(bundle,r'PACKAGES\PLANTTYPES.RTON',decoder)
+    # The chooser asks IsOwned even for hidden/disabled PlantType entries.
+    # Dependency checks must include private theatre houses and growth forms.
+    from iris_plant_ids_native import ALL_PLANT_IDS
+    unmapped={o['objdata']['TypeName'] for o in types['objects']}-ALL_PLANT_IDS.keys()
+    if unmapped:raise ValueError('Native plant enum has no IDs for resource types: '+repr(sorted(unmapped)))
+    from iris_chooser_preview import PREVIEW_ROOTS
+    chooser=manifest['UI_SeedChooser']
+    preview_groups={c['id'] for c in chooser['subgroups']}
+    for root in PREVIEW_ROOTS:
+        missing={c['id'] for c in manifest[root]['subgroups']}-preview_groups
+        if missing:raise ValueError('Seed chooser does not preload '+root+': '+repr(sorted(missing)))
     plant_types={a:o['objdata'] for o in types['objects'] for a in o.get('aliases',[])}
     map_data=read_rton(bundle,r'PACKAGES\WORLDS\DARK\WORLDMAP.RTON',decoder)['objects'][0]['objdata']
     event_names={e['m_name'] for e in map_data['m_eventList']}
