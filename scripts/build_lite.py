@@ -21,6 +21,8 @@ from iris_chinese_fonts import (
     PAUSE_LABELS, STORE_PRODUCT_COPY, STORE_PROFILE_CAPTIONS, button_caption, chooser_caption, prepare_fonts,
 )
 from iris_desktop_input import patch_native as patch_input_native
+from iris_future_world import enable_future_in_engine, restore_future
+from iris_dark_ages import enable_dark_in_engine, restore_dark
 from iris_speed_art import HUD_ATLASES, aster_icons, port_speed_art
 from recovery_compile import RECOVERED_JAVA, baseline_classpath
 
@@ -285,12 +287,103 @@ def relocate_battle_coins(bundle, decoder, encoder, updates):
         updates.setdefault(group, {})[path] = data
 
 
-def package_expansion(source, destination, cn, rton, cn_apk, etc1tool, custom_font=None, *, zh_cn=None):
+def package_expansion(source, destination, cn, rton, cn_apk, etc1tool, custom_font=None, *, zh_cn=None,
+                      future_obbs=None, dark_ages=False, cn_scaredy_apk=None, dark_smoke_test=False):
     sys.path[:0] = [str(rton.resolve()), str((cn / 'scripts').resolve())]
     from merge_legacy_pvp_resources import trie_read, trie_write
     from pyvz2rton import JSONDecoder, RTONDecoder
 
-    bundle = ResourceBundle(source.read_bytes(), trie_read, trie_write)
+    raw = source.read_bytes()
+    if future_obbs:
+        raw = restore_future(raw, future_obbs, cn_apk, etc1tool, trie_read, trie_write, RTONDecoder, JSONDecoder)
+    if dark_ages:
+        raw = restore_dark(raw, cn_apk, trie_read, trie_write, RTONDecoder, JSONDecoder, etc1tool=etc1tool)
+        from iris_dark_mushrooms import restore_mushrooms
+        raw = restore_mushrooms(raw, cn_apk, trie_read, trie_write, RTONDecoder, JSONDecoder)
+    if cn_scaredy_apk:
+        from iris_cn_scaredy import restore_scaredy
+        raw = restore_scaredy(raw, cn_scaredy_apk, cn_apk, trie_read, trie_write,
+                             RTONDecoder, JSONDecoder, etc1tool)
+        from iris_fumeshroom import restore_fumeshroom
+        raw = restore_fumeshroom(raw, cn_apk, trie_read, trie_write,
+                                 RTONDecoder, JSONDecoder, etc1tool)
+        from iris_peanut import restore_peanut
+        raw = restore_peanut(raw, cn_apk, trie_read, trie_write,
+                             RTONDecoder, JSONDecoder, etc1tool)
+        from iris_sunbean import restore_sunbean
+        raw = restore_sunbean(raw, cn_apk, trie_read, trie_write,
+                              RTONDecoder, JSONDecoder, etc1tool)
+        from iris_magnetshroom import restore_magnetshroom
+        raw = restore_magnetshroom(raw, cn_apk, trie_read, trie_write,
+                                   RTONDecoder, JSONDecoder, etc1tool)
+        from iris_streetlamp import restore_streetlamp
+        raw = restore_streetlamp(raw, cn_apk, trie_read, trie_write,
+                                 RTONDecoder, JSONDecoder, etc1tool)
+        from iris_growth_shrooms import restore_growth_shrooms
+        raw = restore_growth_shrooms(raw, cn_apk, trie_read, trie_write,
+                                    RTONDecoder, JSONDecoder, etc1tool)
+        from iris_oakshooter import restore_oakshooter
+        raw = restore_oakshooter(raw, cn_apk, trie_read, trie_write,
+                                RTONDecoder, JSONDecoder, etc1tool)
+        from iris_dark_wizard import restore_dark_wizard
+        raw = restore_dark_wizard(raw, cn_apk, trie_read, trie_write,
+                                 RTONDecoder, JSONDecoder)
+        from iris_rogue import restore_rogue
+        raw = restore_rogue(raw, cn_apk, trie_read, trie_write,
+                            RTONDecoder, JSONDecoder)
+        from iris_jester import restore_jester
+        raw = restore_jester(raw, cn_apk, trie_read, trie_write,
+                             RTONDecoder, JSONDecoder)
+        from iris_archmage import restore_archmage
+        raw = restore_archmage(raw, cn_apk, trie_read, trie_write,
+                               RTONDecoder, JSONDecoder)
+        from iris_king import restore_king
+        raw = restore_king(raw, cn_apk, trie_read, trie_write,
+                           RTONDecoder, JSONDecoder)
+        from iris_potions import restore_potions
+        raw = restore_potions(raw, cn_apk, trie_read, trie_write,
+                              RTONDecoder, JSONDecoder)
+        from iris_dark_gargantuar import restore_dark_gargantuar
+        raw = restore_dark_gargantuar(raw, cn_apk, trie_read, trie_write,
+                                     RTONDecoder, JSONDecoder)
+        from iris_hypno import restore_hypno
+        raw = restore_hypno(raw, cn_apk, trie_read, trie_write,
+                            RTONDecoder, JSONDecoder, etc1tool)
+        from iris_oak_train import restore_aiming_resources
+        raw = restore_aiming_resources(raw, cn_apk, trie_read, trie_write,
+                                       RTONDecoder, JSONDecoder)
+        from iris_theatre import restore_theatre_resources
+        raw = restore_theatre_resources(raw, cn_apk, trie_read, trie_write,
+                                        RTONDecoder, JSONDecoder)
+        from iris_coffeebean import restore_coffeebean
+        raw = restore_coffeebean(raw, cn_apk, trie_read, trie_write,
+                                RTONDecoder, JSONDecoder, etc1tool)
+        from iris_dark_dragon_imp import restore_dragon_imp
+        raw = restore_dragon_imp(raw, cn_apk, trie_read, trie_write,
+                                 RTONDecoder, JSONDecoder)
+        from iris_dark_finale import restore_finale_reward
+        raw = restore_finale_reward(raw, cn_apk, trie_read, trie_write,
+                                   RTONDecoder, JSONDecoder)
+        from iris_dark_campaign import restore_campaign
+        raw = restore_campaign(raw, cn_apk, trie_read, trie_write,
+                               RTONDecoder, JSONDecoder)
+        from iris_dark_locale import extend_dark_locale
+        raw = extend_dark_locale(raw, trie_read, trie_write, RTONDecoder)
+        from iris_future_world import read_rton
+        checked = ResourceBundle(raw, trie_read, trie_write)
+        groups = {g['id'] for g in checked.manifest(RTONDecoder)['groups']}
+        types = read_rton(checked, r'PACKAGES\PLANTTYPES.RTON', RTONDecoder)
+        required = {o.get('objdata', {}).get('PlantFramework', '') for o in types['objects']}
+        missing = {f for f in required if f.startswith('PlantIris') and f not in groups}
+        if missing:
+            raise ValueError(f'Missing framework-named resource groups: {sorted(missing)}')
+    if dark_smoke_test:
+        from iris_dark_smoke import install_fixture
+        raw = install_fixture(raw, trie_read, trie_write, RTONDecoder, JSONDecoder)
+    if dark_ages:
+        from iris_dark_campaign import validate_preloads
+        validate_preloads(ResourceBundle(raw,trie_read,trie_write),RTONDecoder)
+    bundle = ResourceBundle(raw, trie_read, trie_write)
     updates = {}
     for locale, title in LANGUAGE.items():
         path = locale_path(locale)
@@ -325,10 +418,21 @@ def main():
     parser.add_argument('--cn-apk', type=Path, required=True, help='local Aster APK with Chinese text and fonts')
     parser.add_argument('--zh-cn', type=Path, default=ROOT / 'src/locales/zh-CN.json',
                         help='UTF-8 JSON overrides for the Simplified Chinese locale')
+    parser.add_argument('--future-obbs', type=Path, nargs=2, metavar=('ROW_1_4', 'ROW_2_1'),
+                        help='restore the original Far Future route using ROW 1.4.244592 and 2.1.1 OBBs')
     parser.add_argument('--custom-font', type=Path, help='local TTF for Chinese chooser, trip title and pause labels')
+    parser.add_argument('--dark-ages', action='store_true', help='port the Aster Dark Ages campaign, actors, plants and special games; replace its boss with a roster conveyor')
+    parser.add_argument('--cn-scaredy-apk', type=Path,
+                        help='audited official CN 4.2.8 APK for the native Scaredy-shroom port')
+    parser.add_argument('--dark-smoke-test', action='store_true',
+                        help='build an isolated com.pvz2unline.test package with a controlled plant fixture')
     parser.add_argument('--rton-tools', type=Path, default=ROOT / 'tools/pyvz2/OBBEdit/libraries')
     parser.add_argument('--output', type=Path, default=ROOT / 'work/lite')
     args = parser.parse_args()
+    if args.cn_scaredy_apk and not args.dark_ages:
+        parser.error('--cn-scaredy-apk requires --dark-ages')
+    if args.dark_smoke_test and not (args.dark_ages and args.cn_scaredy_apk):
+        parser.error('--dark-smoke-test requires --dark-ages and --cn-scaredy-apk')
     zh_cn = json.loads(args.zh_cn.read_text(encoding='utf-8-sig'))
     if not isinstance(zh_cn, dict):
         parser.error('--zh-cn must contain a JSON object')
@@ -360,7 +464,80 @@ def main():
     native = 'lib/armeabi-v7a/libPVZ2.so'
     ndk = args.ndk or sdk / 'ndk/27.0.12077973'
     patch_input_native(decoded / native, ROOT / 'src/desktop-input/iris.cpp', ndk, out,
-                       custom_typefaces=args.custom_font is not None)
+                       custom_typefaces=args.custom_font is not None, dark_minigames=args.dark_ages)
+    if args.future_obbs:
+        enable_future_in_engine(decoded / native, ROOT / 'src/future/mech_beam.S', ndk, out)
+    if args.dark_ages:
+        enable_dark_in_engine(decoded / native)
+    from iris_font_cache import patch_font_cache
+    patch_font_cache(decoded / native, ROOT / 'src/desktop-input/font_cache.S', ndk, out)
+    if args.cn_scaredy_apk:
+        from iris_scaredy_native import patch_scaredy_native
+        patch_scaredy_native(decoded / native, ROOT / 'src/dark/scaredy.cpp', ndk, out,
+                             trace=args.dark_smoke_test)
+    if args.dark_ages:
+        from iris_dark_mushrooms_native import patch_mushrooms_native
+        patch_mushrooms_native(decoded / native, ROOT / 'src/dark/mushrooms.cpp', ndk, out,
+                               trace=args.dark_smoke_test)
+        from iris_fumeshroom_native import patch_fumeshroom_native
+        patch_fumeshroom_native(decoded / native, ROOT / 'src/dark/fumeshroom.cpp', ndk, out,
+                               trace=args.dark_smoke_test)
+        from iris_peanut_native import patch_peanut_native
+        patch_peanut_native(decoded / native, ROOT / 'src/dark/peanut.cpp', ndk, out,
+                            trace=args.dark_smoke_test)
+        from iris_sunbean_native import patch_sunbean_native
+        patch_sunbean_native(decoded / native, ROOT / 'src/dark/sunbean.cpp', ndk, out,
+                             trace=args.dark_smoke_test)
+        from iris_dark_framework_native import patch_dark_framework
+        patch_dark_framework(decoded / native, ROOT / 'src/dark/framework.cpp', ndk, out,
+                              trace=args.dark_smoke_test, smoke=args.dark_smoke_test)
+        from iris_mist_native import patch_mist_native
+        patch_mist_native(decoded / native, ROOT / 'src/dark/mist.cpp', ndk, out,
+                           trace=args.dark_smoke_test)
+        from iris_growth_projectiles_native import patch_growth_projectiles
+        patch_growth_projectiles(decoded / native, ROOT / 'src/dark/growth_projectiles.cpp', ndk, out,
+                                 trace=args.dark_smoke_test)
+        from iris_traps_native import patch_traps_native
+        patch_traps_native(decoded / native, ROOT / 'src/dark/traps.cpp', ndk, out,
+                           trace=args.dark_smoke_test)
+        from iris_dark_wizard_native import patch_wizard_native
+        patch_wizard_native(decoded / native, ROOT / 'src/dark/wizard.cpp', ndk, out,
+                            trace=args.dark_smoke_test)
+        from iris_rogue_native import patch_rogue_native
+        patch_rogue_native(decoded / native, ROOT / 'src/dark/rogue.cpp', ndk, out,
+                           trace=args.dark_smoke_test)
+        from iris_jester_native import patch_jester_native
+        patch_jester_native(decoded / native, ROOT / 'src/dark/jester.cpp', ndk, out,
+                            trace=args.dark_smoke_test)
+        from iris_archmage_native import patch_archmage_native
+        patch_archmage_native(decoded / native, ROOT / 'src/dark/archmage.cpp', ndk, out,
+                              trace=args.dark_smoke_test)
+        from iris_king_native import patch_king_native
+        patch_king_native(decoded / native, ROOT / 'src/dark/king.cpp', ndk, out,
+                          trace=args.dark_smoke_test)
+        from iris_potions_native import patch_potions_native
+        patch_potions_native(decoded / native, ROOT / 'src/dark/potions.cpp', ndk, out,
+                             trace=args.dark_smoke_test)
+        from iris_hypno_native import patch_hypno_native
+        patch_hypno_native(decoded / native, ROOT / 'src/dark/hypno.cpp', ndk, out,
+                           trace=args.dark_smoke_test)
+        from iris_dark_gargantuar_native import patch_dark_gargantuar_native
+        patch_dark_gargantuar_native(decoded / native, ROOT / 'src/dark/garg.cpp', ndk, out,
+                                     trace=args.dark_smoke_test)
+        from iris_oak_train_native import patch_oak_train_native
+        patch_oak_train_native(decoded / native, ROOT / 'src/dark/oak_train.cpp', ndk, out,
+                               trace=args.dark_smoke_test)
+        from iris_theatre_native import patch_theatre_native
+        patch_theatre_native(decoded / native, ROOT / 'src/dark/theatre.cpp', ndk, out,
+                             trace=args.dark_smoke_test)
+        from iris_coffeebean_native import patch_coffeebean_native
+        patch_coffeebean_native(decoded / native, ROOT / 'src/dark/coffee.cpp', ndk, out,
+                                trace=args.dark_smoke_test)
+        from iris_dragon_imp_native import patch_dragon_imp_native
+        patch_dragon_imp_native(decoded / native, ROOT / 'src/dark/dragon_imp.cpp', ndk, out,
+                                trace=args.dark_smoke_test)
+        from iris_plant_ids_native import patch_plant_ids_native
+        patch_plant_ids_native(decoded / native, ROOT / 'src/dark/plant_ids.cpp', ndk, out)
     bridge = decoded / 'lib/armeabi-v7a/libIrisSpeedFeedback.so'
     run(ndk / 'toolchains/llvm/prebuilt/windows-x86_64/bin/clang++.exe',
         '--target=armv7a-linux-androideabi21', '-Os', '-shared', '-fPIC', '-fno-exceptions',
@@ -368,7 +545,9 @@ def main():
         ROOT / 'src/desktop-input/speed_feedback.cpp', '-ldl', '-o', bridge)
     size, digest, zh_size, zh_digest = package_expansion(
         args.expansion, decoded / 'assets/extobb.save', args.cn_workspace, args.rton_tools,
-        args.cn_apk, sdk / 'platform-tools/etc1tool.exe', args.custom_font, zh_cn=zh_cn)
+        args.cn_apk, sdk / 'platform-tools/etc1tool.exe', args.custom_font, zh_cn=zh_cn,
+        future_obbs=args.future_obbs, dark_ages=args.dark_ages, cn_scaredy_apk=args.cn_scaredy_apk,
+        dark_smoke_test=args.dark_smoke_test)
     (decoded / 'assets/data.save').unlink()
 
     spec = out / 'ExpansionSpec.java'
@@ -414,6 +593,18 @@ def main():
             raise ValueError('Unexpected packaged native code or legacy assets')
     (out / 'aligned.apk').unlink()
     (out / 'recompiled.apk').unlink()
+    if args.dark_smoke_test:
+        # Enforce namespace separation at build time. Do not leave a main-
+        # named deliverable containing the development replacement for dark1.
+        import rename_unline_apk as renamer
+        renamer.VARIANTS['test'] = renamer.VARIANTS['iris']
+        original_rename = renamer.rename_manifest
+        renamer.rename_manifest = lambda data, old, new: original_rename(
+            original_rename(data, old, new), LABEL, 'Iris Dark Dev')
+        isolated = out / 'PvZ2-Iris-Dark-Smoke.apk'
+        renamer.build('test', final, isolated, tools)
+        final.rename(out / 'NA-development-input.apk')
+        final = isolated
     print(f'{final}\nSHA-256 {sha256(final)}')
 
 

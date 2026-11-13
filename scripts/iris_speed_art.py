@@ -20,6 +20,39 @@ PAUSE = 'IMAGE_UI_HUD_INGAME_PAUSE_BUTTON'
 HUD_ATLASES = tuple(f'UIImages_{resolution}' for resolution in (384, 768, 1536))
 
 
+def free_atlas_region(resources, parent, width, height, wanted_width, wanted_height):
+    """Find unused ETC blocks without moving/recompressing existing sprites.
+
+    A four-pixel gutter also reserves the block containing a nonaligned
+    source edge. Row bitsets keep placement inexpensive on the large atlas.
+    """
+    columns, rows = width // 4, height // 4
+    w, h = (wanted_width + 3) // 4, (wanted_height + 3) // 4
+    occupied = [0] * rows
+    for sprite in resources:
+        if sprite.get('parent') != parent:
+            continue
+        left, top, right, bottom = box(sprite)
+        x0, x1 = max(0, left // 4 - 1), min(columns, (right + 3) // 4 + 1)
+        y0, y1 = max(0, top // 4 - 1), min(rows, (bottom + 3) // 4 + 1)
+        bits = ((1 << (x1 - x0)) - 1) << x0
+        for y in range(y0, y1):
+            occupied[y] |= bits
+    all_bits = (1 << columns) - 1
+    for y in range(1, rows - h):
+        used = 1 | (1 << (columns - 1))
+        for row in occupied[y:y + h]:
+            used |= row
+        free = all_bits ^ used
+        starts = free
+        for shift in range(1, w):
+            starts &= free >> shift
+        if starts:
+            x = (starts & -starts).bit_length() - 1
+            return x * 4, y * 4
+    raise ValueError(f'No free {wanted_width}x{wanted_height} region in {parent}')
+
+
 def aster_icons(apk, read_index, write_index, decoder):
     from index_texture_prefetch import ResourceZip
 
@@ -122,14 +155,12 @@ def port_speed_art(bundle, decoder, encoder, icons, etc1tool, updates):
             texture = bytearray(bundle.read(group, path))
             size = pause['aw']
             padded = (size + 3) & -4
-            bottom = max(box(item)[3] for item in resources if item.get('parent') == parent)
-            y = ((bottom + 3) & -4) + 4
             if (fmt != 147 or len(texture) != width * height * 3 // 2
-                    or pause['ah'] != size or 2 * padded + 12 > width or y + padded > height):
+                    or pause['ah'] != size):
                 raise ValueError(f'No ETC1/A8 space for speed buttons in {path}')
             sprites = []
             for index, (name, icon) in enumerate(zip(SPEED_IMAGES, icons, strict=True)):
-                x = 4 + index * (padded + 4)
+                x, y = free_atlas_region(resources + sprites, parent, width, height, padded, padded)
                 sprite = icon.resize((size, size), Image.Resampling.LANCZOS)
                 paste_etc1(texture, width, height, x, y, sprite, etc1tool, Path(temp))
                 sprites.append({

@@ -66,7 +66,7 @@ ENTRY_OFFSET = 0x3A0
 PAGE_SIZE = 0x1000
 
 
-def patch_native(path, source, ndk, out, *, custom_typefaces=False):
+def patch_native(path, source, ndk, out, *, custom_typefaces=False, dark_minigames=False):
     """Append a read-execute segment without granting execution to game data."""
     bin_dir = ndk / 'toolchains/llvm/prebuilt/windows-x86_64/bin'
     obj = out / 'iris-input.o'
@@ -77,7 +77,8 @@ def patch_native(path, source, ndk, out, *, custom_typefaces=False):
                       '/DISCARD/ : { *(.ARM.exidx*) *(.ARM.extab*) *(.comment*) } }', encoding='ascii')
     subprocess.run([bin_dir / 'clang++.exe', '--target=armv7a-linux-androideabi21', '-mthumb',
                     '-Oz', '-fPIC', '-ffreestanding', '-fno-exceptions', '-fno-rtti',
-                    '-fno-unwind-tables', '-fno-asynchronous-unwind-tables', '-c', source, '-o', obj], check=True)
+                    '-fno-unwind-tables', '-fno-asynchronous-unwind-tables',
+                    f'-DIRIS_DARK_INPUT={int(dark_minigames)}', '-c', source, '-o', obj], check=True)
     subprocess.run([bin_dir / 'ld.lld.exe', '-T', linker, '--oformat=binary', '-o', payload, obj], check=True)
 
     data = bytearray(path.read_bytes())

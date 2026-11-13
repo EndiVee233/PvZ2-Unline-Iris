@@ -36,8 +36,11 @@ def check(image, base):
     cpu.reg_write(UC_ARM_REG_FPEXC, 1 << 30)
     with BytesIO(image) as stream:
         segments = [s for s in ELFFile(stream).iter_segments() if s['p_type'] == 'PT_LOAD']
-        assert len(segments) == 3 and segments[-1]['p_flags'] == 5
-        assert segments[-1]['p_vaddr'] == PAYLOAD_VADDR
+        assert len(segments) in (3, 4) and segments[2]['p_flags'] == 5
+        if len(segments) == 4:
+            assert (segments[3]['p_vaddr'], segments[3]['p_filesz'], segments[3]['p_flags']) == (0xf80000, 0, 6)
+            assert segments[3]['p_memsz'] in (4096, 8192)
+        assert segments[2]['p_vaddr'] == PAYLOAD_VADDR
         for segment in segments:
             start = segment['p_vaddr'] & -0x1000
             end = (segment['p_vaddr'] + segment['p_memsz'] + 0xFFF) & -0x1000

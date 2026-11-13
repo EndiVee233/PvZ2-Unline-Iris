@@ -1,0 +1,26 @@
+{
+  "revision": "2026-11-12-after-r36-acceptance",
+  "accepted_baseline": "r36c",
+  "scope": "Full Aster Dark Ages, including the explicitly requested China-exclusive content",
+  "plants": [
+    {"type": "fumeshroom", "name": "大喷菇", "source": "aster", "base_stats_tier": 1},
+    {"type": "puffshroom", "name": "小喷菇", "source": "aster", "base_stats_tier": 1},
+    {"type": "sunshroom", "name": "阳光菇", "source": "aster", "base_stats_tier": 1},
+    {"type": "peanut", "name": "花生射手", "source": "aster", "base_stats_tier": 1},
+    {"type": "sunbean", "name": "阳光豆", "source": "aster", "base_stats_tier": 1},
+    {"type": "magnetshroom", "name": "磁力菇", "source": "aster", "base_stats_tier": 1},
+    {"type": "hypnoshroom", "name": "魅惑菇", "source": "aster", "base_stats_tier": 1},
+    {"type": "coffeebean", "name": "咖啡豆", "source": "aster", "base_stats_tier": 1, "skill_tier": 1, "policy": "Aster HomeWorld is dark; its MaxLevel is 1. Preserve the implemented original effect rather than the unused copied Sunflower grade table."},
+    {"type": "streetlamp", "name": "路灯花", "source": "aster", "base_stats_tier": 1, "skill_tier": 1, "policy": "User explicitly chose Aster's existing illumination, stealth reveal and plant-food effects; v163 has no implemented second-tier skill"},
+    {"type": "oakshooter", "name": "橡木弓手", "source": "aster", "base_stats_tier": 1, "skill_tier": 2},
+    {"type": "fireshroom", "name": "烈焰菇", "source": "aster", "base_stats_tier": 1, "skill_tier": 2},
+    {"type": "iceshroom", "name": "寒冰菇", "source": "aster", "base_stats_tier": 1, "skill_tier": 2},
+    {"type": "scaredyshroom", "name": "胆小菇", "source": "official-cn-latest", "base_stats_tier": 1}
+  ],
+  "additional_zombies": ["dark_rogue", "dark_archmage"],
+  "additional_modules": ["WarMistProperties", "TowerDefendProperties", "TowerDefendIntroProperties", "OakTrainProperties", "OakTrainIntroProperties"],
+  "minigames": {"theatre": "full implementation requested; empty placeholder is no longer the target", "oak_train": "full implementation requested; empty placeholder is no longer the target"},
+  "grades": {"import_progression_system": false, "attack_multiplier": 1, "health_multiplier": 1, "skill_intrinsic_effects": true},
+  "activation": "Keep unimplemented content locked until native behavior, resources, audio and saves are verified",
+  "legacy_policy": "international-policy.json describes the earlier r34-r36 implementation filters; named China-exclusive content is now in scope and those filters must be retired as each implementation becomes available"
+}

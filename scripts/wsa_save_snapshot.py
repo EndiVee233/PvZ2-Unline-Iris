@@ -172,7 +172,16 @@ if __name__ == '__main__':
     parser.add_argument('--current', action='store_true',
                         help='Back up current progress while retaining the previous snapshot')
     parser.add_argument('--adb', type=Path, default=DEFAULT_ADB)
+    parser.add_argument('--package', choices=('com.ea.game.pvz2_na', 'com.pvz2unline.iris'), default=PACKAGE)
     args = parser.parse_args()
+    if args.package != PACKAGE:
+        PACKAGE = args.package
+        STORE = STORE / PACKAGE
+        ACTIVE = STORE / 'ACTIVE.json'
+        TREES = {
+            'internal': (f'/data/user/0/{PACKAGE}', ('files', 'databases', 'shared_prefs'), ('files/expansion',)),
+            'external': (f'/data/media/0/Android/data/{PACKAGE}', ('files',), ()),
+        }
     if args.current and args.action != 'backup':
         parser.error('--current is only valid for backup')
     wsa = Wsa(args.adb)

@@ -643,6 +643,14 @@ extern "C" __attribute__((section(".text.entry")))
 Word irisDesktop(Word base, Byte *driver, Touch *event, Word phase) {
     if (phase < 2) {
         drawPending(base, driver, reinterpret_cast<Byte *>(event), phase == 1);
+#if IRIS_DARK_INPUT
+        if (phase == 0) {
+            auto callback = *reinterpret_cast<void (**)(Byte *, Byte *)>(base + 0xf81088);
+            if (callback) callback(driver, reinterpret_cast<Byte *>(event));
+            callback = *reinterpret_cast<void (**)(Byte *, Byte *)>(base + 0xf81854);
+            if (callback) callback(driver, reinterpret_cast<Byte *>(event));
+        }
+#endif
         return false;
     }
     if (phase == 2) {
@@ -679,6 +687,25 @@ Word irisDesktop(Word base, Byte *driver, Touch *event, Word phase) {
     Byte *board = field<Byte *>(app, 0x6c0);
     if (phase >= 16 && phase <= 20) {
         if (speedButtonTouch(base, driver, app, board, *event)) return true;
+#if IRIS_DARK_INPUT
+        if (board && playable(board) && !topModal(app) && !field<Byte>(driver, 0xdd)) {
+            auto callback = *reinterpret_cast<Word (**)(Byte *, int, int, Word)>(base + 0xf81084);
+            if (callback) {
+                Touch point;
+                copyTouch(point, *event);
+                native<void>(base, 0x9e8340, driver, &point);
+                int local[2];
+                boardPoint(base, board, point.x, point.y, local);
+                if (callback(board, local[0], local[1], event->phase)) return true;
+            }
+            auto theatre = *reinterpret_cast<Word (**)(Byte *, int, int, Word)>(base + 0xf81850);
+            if (theatre) {
+                Touch point; copyTouch(point, *event); native<void>(base, 0x9e8340, driver, &point);
+                int local[2]; boardPoint(base, board, point.x, point.y, local);
+                if (theatre(board, local[0], local[1], event->phase)) return true;
+            }
+        }
+#endif
         pinchPointer(base, driver, app, board, *event);
         return false;
     }
@@ -693,6 +720,33 @@ Word irisDesktop(Word base, Byte *driver, Touch *event, Word phase) {
         return false;
     }
     if (!playable(board) || modal) return false;
+#if IRIS_DARK_INPUT
+    if (event->phase == 5 || event->phase == 6) {
+        auto callback = *reinterpret_cast<Word (**)(Byte *, int, int, Word)>(base + 0xf81084);
+        if (callback) {
+            Touch point;
+            copyTouch(point, *event);
+            if (event->phase == 5) {
+                native<void>(base, 0x9e8340, driver, &point);
+                int local[2];
+                boardPoint(base, board, point.x, point.y, local);
+                point.x = local[0];
+                point.y = local[1];
+            }
+            if (callback(board, point.x, point.y, event->phase)) return false;
+        }
+        auto theatre = *reinterpret_cast<Word (**)(Byte *, int, int, Word)>(base + 0xf81850);
+        if (theatre) {
+            Touch point; copyTouch(point, *event);
+            if (event->phase == 5) {
+                native<void>(base, 0x9e8340, driver, &point);
+                int local[2]; boardPoint(base, board, point.x, point.y, local);
+                point.x = local[0]; point.y = local[1];
+            }
+            if (theatre(board, point.x, point.y, event->phase)) return false;
+        }
+    }
+#endif
     if (event->phase == 5) {
         native<void>(base, 0x9e8340, driver, event);
         moveCursor(base, app, board, *event);

@@ -1,0 +1,1901 @@
+{
+  "source": "Aster v1.7.5-v163 ARM32",
+  "levels": [
+    {
+      "file": "dark1",
+      "status": "adapted",
+      "sha256": "924d48a9545385b32f381d26f786c6f03aca91efdbd6070ce6010d4c56c12c3b",
+      "grade_fields_removed_if_imported": 0,
+      "classes": [
+        "GravestoneProperties",
+        "LevelDefinition",
+        "ProtectThePlantChallengeProperties",
+        "RandZombieProperties",
+        "SeedBankProperties",
+        "StarChallengeBeatTheLevelProps",
+        "StarChallengeKillZombiesInTimeProps",
+        "StarChallengeModuleProperties",
+        "StarChallengePlantsLostProps",
+        "StarChallengeSimultaneousPlantsProps",
+        "StarChallengeSpendSunHoldoutProps",
+        "StarChallengeSunProducedProps",
+        "WaveGeneratorProperties"
+      ],
+      "missing_modules": [],
+      "unported_zombies": [],
+      "unported_plants": [],
+      "reason": "普通波次；RandZombie 转原生波次池；墓碑名/语言/开场适配，待运行验收",
+      "map_entry": true,
+      "source_reference_error": "",
+      "planned_replacements": {},
+      "remaining_native_classes": [],
+      "remaining_actor_ports": []
+    },
+    {
+      "file": "dark2",
+      "status": "adapted",
+      "sha256": "fa23a5a2dd4cb05b20ea5baed01761c5783eab1c6283f030b6a3af48ae179406",
+      "grade_fields_removed_if_imported": 0,
+      "classes": [
+        "GravestoneProperties",
+        "LevelDefinition",
+        "RandZombieProperties",
+        "SeedBankProperties",
+        "StarChallengeModuleProperties",
+        "StarChallengePlantsLostProps",
+        "StarChallengeSimultaneousPlantsProps",
+        "StarChallengeSpendSunHoldoutProps",
+        "StarChallengeSunUsedProps",
+        "StarChallengeZombieDistanceProps",
+        "WaveGeneratorProperties",
+        "ZombiePotionModuleProperties"
+      ],
+      "missing_modules": [
+        "ZombiePotionModuleProperties"
+      ],
+      "unported_zombies": [],
+      "unported_plants": [],
+      "reason": "移除未被引用的药水对象；适配墓碑 Overrides；普通原生波次",
+      "map_entry": true,
+      "source_reference_error": "",
+      "planned_replacements": {},
+      "remaining_native_classes": [],
+      "remaining_actor_ports": []
+    },
+    {
+      "file": "dark3",
+      "status": "adapted",
+      "sha256": "4ace694194a456ca8336bc68b69fee9aa80adbc28c60102ee23e04bb9dd67457",
+      "grade_fields_removed_if_imported": 0,
+      "classes": [
+        "GravestoneProperties",
+        "LevelDefinition",
+        "RandZombieProperties",
+        "SeedBankProperties",
+        "StarChallengeKillZombiesInTimeProps",
+        "StarChallengeModuleProperties",
+        "StarChallengePlantBeforeLineProps",
+        "StarChallengeSimultaneousPlantsProps",
+        "StarChallengeSunProducedProps",
+        "StarChallengeSunUsedProps",
+        "WaveGeneratorProperties"
+      ],
+      "missing_modules": [],
+      "unported_zombies": [],
+      "unported_plants": [],
+      "reason": "普通波次；RandZombie 转原生波次池；墓碑名/语言/开场适配，待运行验收",
+      "map_entry": true,
+      "source_reference_error": "",
+      "planned_replacements": {},
+      "remaining_native_classes": [],
+      "remaining_actor_ports": []
+    },
+    {
+      "file": "dark4",
+      "status": "pending",
+      "sha256": "4068a06b2d6f0e02e4bc926efac14fc608de9b16ca068f28c280ea96a61f7cee",
+      "grade_fields_removed_if_imported": 0,
+      "classes": [
+        "LevelDefinition",
+        "RandZombieProperties",
+        "SeedBankProperties",
+        "StarChallengeKillZombiesInTimeProps",
+        "StarChallengeModuleProperties",
+        "StarChallengePlantBeforeLineProps",
+        "StarChallengePlantsLostProps",
+        "StarChallengeSimultaneousPlantsProps",
+        "StarChallengeSpendSunHoldoutProps",
+        "WaveGeneratorProperties"
+      ],
+      "missing_modules": [],
+      "unported_zombies": [
+        "dark_juggler"
+      ],
+      "unported_plants": [],
+      "reason": "角色行为/资源：dark_juggler",
+      "map_entry": true,
+      "source_reference_error": "",
+      "planned_replacements": {},
+      "remaining_native_classes": [],
+      "remaining_actor_ports": [
+        "dark_juggler"
+      ]
+    },
+    {
+      "file": "dark5",
+      "status": "pending",
+      "sha256": "d293ba1aaf9f3e6d2f4d459cf31fd2194adbd79726d68aacffc5dd1296d8e2de",
+      "grade_fields_removed_if_imported": 0,
+      "classes": [
+        "LevelDefinition",
+        "RandZombieProperties",
+        "SeedBankProperties",
+        "StarChallengeKillZombiesInTimeProps",
+        "StarChallengeModuleProperties",
+        "StarChallengeSimultaneousPlantsProps",
+        "StarChallengeSunProducedProps",
+        "StarChallengeSunUsedProps",
+        "StarChallengeZombieDistanceProps",
+        "WaveGeneratorProperties"
+      ],
+      "missing_modules": [],
+      "unported_zombies": [
+        "dark_juggler"
+      ],
+      "unported_plants": [],
+      "reason": "角色行为/资源：dark_juggler",
+      "map_entry": true,
+      "source_reference_error": "",
+      "planned_replacements": {},
+      "remaining_native_classes": [],
+      "remaining_actor_ports": [
+        "dark_juggler"
+      ]
+    },
+    {
+      "file": "dark6",
+      "status": "placeholder",
+      "sha256": "fbf1d578e754b2f2ee4df402e9636b681c46517caac3d37f6b469c215c4bf65f",
+      "grade_fields_removed_if_imported": 0,
+      "classes": [
+        "LevelDefinition",
+        "SeedBankProperties",
+        "StarChallengeBeatTheLevelProps",
+        "StarChallengeModuleProperties",
+        "TowerDefendIntroProperties",
+        "TowerDefendProperties",
+        "WaveGeneratorProperties"
+      ],
+      "missing_modules": [
+        "TowerDefendIntroProperties",
+        "TowerDefendProperties"
+      ],
+      "unported_zombies": [
+        "zombie_towerdefend_knight",
+        "zombie_towerdefend_normal",
+        "zombie_towerdefend_wolf_fire",
+        "zombie_towerdefend_wolf_imp"
+      ],
+      "unported_plants": [],
+      "reason": "按新要求接可结束空关，不加载小游戏模块",
+      "map_entry": true,
+      "source_reference_error": "",
+      "planned_replacements": {},
+      "remaining_native_classes": [
+        "TowerDefendIntroProperties",
+        "TowerDefendProperties"
+      ],
+      "remaining_actor_ports": [
+        "zombie_towerdefend_knight",
+        "zombie_towerdefend_normal",
+        "zombie_towerdefend_wolf_fire",
+        "zombie_towerdefend_wolf_imp"
+      ]
+    },
+    {
+      "file": "dark7",
+      "status": "pending",
+      "sha256": "89981d692438cba5c1ecb966c205e61151ed554cb7169c625c1048c0d53f1e93",
+      "grade_fields_removed_if_imported": 0,
+      "classes": [
+        "LevelDefinition",
+        "RandZombieProperties",
+        "SeedBankProperties",
+        "StarChallengeKillZombiesInTimeProps",
+        "StarChallengeModuleProperties",
+        "StarChallengePlantBeforeLineProps",
+        "StarChallengePlantsLostProps",
+        "StarChallengeSimultaneousPlantsProps",
+        "StarChallengeSpendSunHoldoutProps",
+        "StarChallengeSunUsedProps",
+        "WaveGeneratorProperties"
+      ],
+      "missing_modules": [],
+      "unported_zombies": [
+        "dark_juggler"
+      ],
+      "unported_plants": [],
+      "reason": "角色行为/资源：dark_juggler",
+      "map_entry": true,
+      "source_reference_error": "",
+      "planned_replacements": {},
+      "remaining_native_classes": [],
+      "remaining_actor_ports": [
+        "dark_juggler"
+      ]
+    },
+    {
+      "file": "dark8",
+      "status": "pending",
+      "sha256": "228e21ef3893d1bf0732055808d818d5f2153f1f367ae79199a22d02003d8b12",
+      "grade_fields_removed_if_imported": 0,
+      "classes": [
+        "LevelDefinition",
+        "RandZombieProperties",
+        "SeedBankProperties",
+        "StarChallengeModuleProperties",
+        "StarChallengePlantsLostProps",
+        "StarChallengeSimultaneousPlantsProps",
+        "StarChallengeSpendSunHoldoutProps",
+        "StarChallengeSunUsedProps",
+        "StarChallengeZombieDistanceProps",
+        "WarMistProperties",
+        "WaveGeneratorProperties"
+      ],
+      "missing_modules": [
+        "WarMistProperties"
+      ],
+      "unported_zombies": [
+        "dark_juggler"
+      ],
+      "unported_plants": [],
+      "reason": "角色行为/资源：dark_juggler",
+      "map_entry": true,
+      "source_reference_error": "",
+      "planned_replacements": {},
+      "remaining_native_classes": [],
+      "remaining_actor_ports": [
+        "dark_juggler"
+      ]
+    },
+    {
+      "file": "dark9",
+      "status": "pending",
+      "sha256": "d8c6017c602d08eef419d5c4385460ceacd1353a0307f5cb3cc7e52e69b87fe4",
+      "grade_fields_removed_if_imported": 0,
+      "classes": [
+        "ConveyorSeedBankProperties",
+        "LevelDefinition",
+        "RandZombieProperties",
+        "StarChallengeBeatTheLevelProps",
+        "StarChallengeModuleProperties",
+        "WarMistProperties",
+        "WaveGeneratorProperties"
+      ],
+      "missing_modules": [
+        "WarMistProperties"
+      ],
+      "unported_zombies": [
+        "dark_juggler",
+        "dark_rogue"
+      ],
+      "unported_plants": [
+        "magnetshroom",
+        "oakshooter",
+        "peanut",
+        "streetlamp"
+      ],
+      "reason": "角色行为/资源：dark_juggler；植物待核对/移植：magnetshroom, oakshooter, peanut, streetlamp",
+      "map_entry": true,
+      "source_reference_error": "",
+      "planned_replacements": {
+        "dark_rogue": "dark_armor2"
+      },
+      "remaining_native_classes": [],
+      "remaining_actor_ports": [
+        "dark_juggler"
+      ]
+    },
+    {
+      "file": "dark10",
+      "status": "adapted",
+      "sha256": "c25bbd59024f71dbeb5490cba4dacb620f08579e5570666e05937628fc790eb1",
+      "grade_fields_removed_if_imported": 0,
+      "classes": [
+        "GravestoneProperties",
+        "LevelDefinition",
+        "RandZombieProperties",
+        "SeedBankProperties",
+        "StarChallengeKillZombiesInTimeProps",
+        "StarChallengeModuleProperties",
+        "StarChallengePlantsLostProps",
+        "StarChallengeSimultaneousPlantsProps",
+        "StarChallengeSpendSunHoldoutProps",
+        "StarChallengeSunProducedProps",
+        "WaveGeneratorProperties"
+      ],
+      "missing_modules": [],
+      "unported_zombies": [
+        "dark_rogue"
+      ],
+      "unported_plants": [],
+      "reason": "国际版无 dark_rogue，按用户要求替换为 dark_armor2；普通原生波次",
+      "map_entry": true,
+      "source_reference_error": "",
+      "planned_replacements": {
+        "dark_rogue": "dark_armor2"
+      },
+      "remaining_native_classes": [],
+      "remaining_actor_ports": []
+    },
+    {
+      "file": "dark11",
+      "status": "pending",
+      "sha256": "3d64672a83c42a2b62f74b77ccb6edfa01055d6b85e3b6fc43f13e7ffe3d7ca8",
+      "grade_fields_removed_if_imported": 0,
+      "classes": [
+        "LevelDefinition",
+        "RandZombieProperties",
+        "SeedBankProperties",
+        "StarChallengeModuleProperties",
+        "StarChallengePlantBeforeLineProps",
+        "StarChallengePlantsLostProps",
+        "StarChallengeSunProducedProps",
+        "StarChallengeSunUsedProps",
+        "StarChallengeZombieDistanceProps",
+        "WarMistProperties",
+        "WaveGeneratorProperties"
+      ],
+      "missing_modules": [
+        "WarMistProperties"
+      ],
+      "unported_zombies": [
+        "dark_juggler",
+        "dark_rogue"
+      ],
+      "unported_plants": [],
+      "reason": "角色行为/资源：dark_juggler",
+      "map_entry": true,
+      "source_reference_error": "",
+      "planned_replacements": {
+        "dark_rogue": "dark_armor2"
+      },
+      "remaining_native_classes": [],
+      "remaining_actor_ports": [
+        "dark_juggler"
+      ]
+    },
+    {
+      "file": "dark12",
+      "status": "pending",
+      "sha256": "29e96823f42a1eec193ae46adf2b4fb0abcf0e25205964a2d39c6ce825fe5353",
+      "grade_fields_removed_if_imported": 0,
+      "classes": [
+        "GravestoneProperties",
+        "LevelDefinition",
+        "RandZombieProperties",
+        "SeedBankProperties",
+        "StarChallengeKillZombiesInTimeProps",
+        "StarChallengeModuleProperties",
+        "StarChallengePlantBeforeLineProps",
+        "StarChallengeSpendSunHoldoutProps",
+        "StarChallengeSunProducedProps",
+        "StarChallengeSunUsedProps",
+        "WaveGeneratorProperties"
+      ],
+      "missing_modules": [],
+      "unported_zombies": [
+        "dark_archmage",
+        "dark_juggler",
+        "dark_rogue"
+      ],
+      "unported_plants": [],
+      "reason": "角色行为/资源：dark_juggler, dark_wizard",
+      "map_entry": true,
+      "source_reference_error": "",
+      "planned_replacements": {
+        "dark_archmage": "dark_wizard",
+        "dark_rogue": "dark_armor2"
+      },
+      "remaining_native_classes": [],
+      "remaining_actor_ports": [
+        "dark_juggler",
+        "dark_wizard"
+      ]
+    },
+    {
+      "file": "dark13",
+      "status": "pending",
+      "sha256": "678d42c6d89a05ae1ab53ec32c48af0ed33bbd54811dd4b9ec10ff26bd07b78e",
+      "grade_fields_removed_if_imported": 0,
+      "classes": [
+        "LastStandMinigameProperties",
+        "LevelDefinition",
+        "RandZombieProperties",
+        "SeedBankProperties",
+        "StarChallengeBeatTheLevelProps",
+        "StarChallengeModuleProperties",
+        "WaveGeneratorProperties"
+      ],
+      "missing_modules": [],
+      "unported_zombies": [
+        "dark_archmage",
+        "dark_juggler",
+        "kongfu_basic"
+      ],
+      "unported_plants": [],
+      "reason": "角色行为/资源：dark_juggler, dark_wizard",
+      "map_entry": true,
+      "source_reference_error": "",
+      "planned_replacements": {
+        "dark_archmage": "dark_wizard",
+        "kongfu_basic": "dark"
+      },
+      "remaining_native_classes": [],
+      "remaining_actor_ports": [
+        "dark_juggler",
+        "dark_wizard"
+      ]
+    },
+    {
+      "file": "dark14",
+      "status": "pending",
+      "sha256": "31f7297ab7c6b6768fd3acbc8557f1ed9a69092182be1a248989943828ff6b89",
+      "grade_fields_removed_if_imported": 0,
+      "classes": [
+        "LevelDefinition",
+        "RandZombieProperties",
+        "SeedBankProperties",
+        "StarChallengeKillZombiesInTimeProps",
+        "StarChallengeModuleProperties",
+        "StarChallengePlantsLostProps",
+        "StarChallengeSimultaneousPlantsProps",
+        "StarChallengeSpendSunHoldoutProps",
+        "StarChallengeZombieDistanceProps",
+        "WaveGeneratorProperties",
+        "ZombiePotionModuleProperties"
+      ],
+      "missing_modules": [
+        "ZombiePotionModuleProperties"
+      ],
+      "unported_zombies": [
+        "dark_archmage",
+        "dark_rogue"
+      ],
+      "unported_plants": [],
+      "reason": "原生模块：ZombiePotionModuleProperties；角色行为/资源：dark_wizard",
+      "map_entry": true,
+      "source_reference_error": "",
+      "planned_replacements": {
+        "dark_archmage": "dark_wizard",
+        "dark_rogue": "dark_armor2"
+      },
+      "remaining_native_classes": [
+        "ZombiePotionModuleProperties"
+      ],
+      "remaining_actor_ports": [
+        "dark_wizard"
+      ]
+    },
+    {
+      "file": "dark15",
+      "status": "pending",
+      "sha256": "6c6964b17978fdf275cf4d672d4eaa32c3fa7843963646c6fd8f2dda890a7202",
+      "grade_fields_removed_if_imported": 0,
+      "classes": [
+        "ConveyorSeedBankProperties",
+        "IntroHypnoShroomProperties",
+        "LevelDefinition",
+        "RandZombieProperties",
+        "StarChallengeBeatTheLevelProps",
+        "StarChallengeModuleProperties",
+        "WaveGeneratorProperties",
+        "ZombiePotionModuleProperties"
+      ],
+      "missing_modules": [
+        "IntroHypnoShroomProperties",
+        "ZombiePotionModuleProperties"
+      ],
+      "unported_zombies": [
+        "dark_basic",
+        "dark_juggler"
+      ],
+      "unported_plants": [
+        "hypnoshroom"
+      ],
+      "reason": "原生模块：ZombiePotionModuleProperties；角色行为/资源：dark_juggler；植物待核对/移植：hypnoshroom",
+      "map_entry": true,
+      "source_reference_error": "",
+      "planned_replacements": {
+        "dark_basic": "dark"
+      },
+      "remaining_native_classes": [
+        "ZombiePotionModuleProperties"
+      ],
+      "remaining_actor_ports": [
+        "dark_juggler"
+      ]
+    },
+    {
+      "file": "dark16",
+      "status": "pending",
+      "sha256": "1ab868ff1ac6fb1bb5d8a50c6c0d6a6ce46197812ca7a3a39ca7a360e237dc81",
+      "grade_fields_removed_if_imported": 34,
+      "classes": [
+        "LevelDefinition",
+        "RandZombieProperties",
+        "SeedBankProperties",
+        "StarChallengeModuleProperties",
+        "StarChallengePlantBeforeLineProps",
+        "StarChallengeSimultaneousPlantsProps",
+        "StarChallengeSpendSunHoldoutProps",
+        "StarChallengeSunProducedProps",
+        "StarChallengeZombieDistanceProps",
+        "WaveGeneratorProperties"
+      ],
+      "missing_modules": [],
+      "unported_zombies": [
+        "dark_juggler",
+        "dark_wizard"
+      ],
+      "unported_plants": [],
+      "reason": "Expected exactly one local object: SunHoldout；角色行为/资源：dark_juggler, dark_wizard",
+      "map_entry": true,
+      "source_reference_error": "Expected exactly one local object: SunHoldout",
+      "planned_replacements": {},
+      "remaining_native_classes": [],
+      "remaining_actor_ports": [
+        "dark_juggler",
+        "dark_wizard"
+      ]
+    },
+    {
+      "file": "dark17",
+      "status": "pending",
+      "sha256": "57ac75db4ea03e22cf374f256ed5b88a8bdca801999d0c0af028643769a0c917",
+      "grade_fields_removed_if_imported": 85,
+      "classes": [
+        "GravestoneProperties",
+        "LevelDefinition",
+        "RandZombieProperties",
+        "SeedBankProperties",
+        "StarChallengeModuleProperties",
+        "StarChallengePlantBeforeLineProps",
+        "StarChallengePlantsLostProps",
+        "StarChallengeSimultaneousPlantsProps",
+        "StarChallengeSunUsedProps",
+        "StarChallengeZombieDistanceProps",
+        "WaveGeneratorProperties"
+      ],
+      "missing_modules": [],
+      "unported_zombies": [
+        "dark_archmage",
+        "dark_rogue",
+        "dark_wizard"
+      ],
+      "unported_plants": [],
+      "reason": "角色行为/资源：dark_wizard",
+      "map_entry": true,
+      "source_reference_error": "",
+      "planned_replacements": {
+        "dark_archmage": "dark_wizard",
+        "dark_rogue": "dark_armor2"
+      },
+      "remaining_native_classes": [],
+      "remaining_actor_ports": [
+        "dark_wizard"
+      ]
+    },
+    {
+      "file": "dark18",
+      "status": "pending",
+      "sha256": "dc542f176d6af155a69d1f5661d42f4eda0c56fd2e22329445c1ef269227e55e",
+      "grade_fields_removed_if_imported": 64,
+      "classes": [
+        "GravestoneProperties",
+        "LevelDefinition",
+        "RandZombieProperties",
+        "SeedBankProperties",
+        "StarChallengeModuleProperties",
+        "StarChallengeSimultaneousPlantsProps",
+        "StarChallengeSpendSunHoldoutProps",
+        "StarChallengeSunProducedProps",
+        "StarChallengeSunUsedProps",
+        "StarChallengeZombieDistanceProps",
+        "WaveGeneratorProperties"
+      ],
+      "missing_modules": [],
+      "unported_zombies": [
+        "dark_archmage",
+        "dark_juggler",
+        "dark_king",
+        "dark_wizard"
+      ],
+      "unported_plants": [],
+      "reason": "角色行为/资源：dark_juggler, dark_king, dark_wizard",
+      "map_entry": true,
+      "source_reference_error": "",
+      "planned_replacements": {
+        "dark_archmage": "dark_wizard"
+      },
+      "remaining_native_classes": [],
+      "remaining_actor_ports": [
+        "dark_juggler",
+        "dark_king",
+        "dark_wizard"
+      ]
+    },
+    {
+      "file": "dark19",
+      "status": "pending",
+      "sha256": "ef809fcb9647e3dd8c5c32c4efeb693fef2c4a7ae371eda97f58ea32c05f4c67",
+      "grade_fields_removed_if_imported": 0,
+      "classes": [
+        "ConveyorSeedBankProperties",
+        "LevelDefinition",
+        "PowerTileIntroProperties",
+        "RandZombieProperties",
+        "StarChallengeBeatTheLevelProps",
+        "StarChallengeKillZombiesInTimeProps",
+        "StarChallengeModuleProperties",
+        "StarChallengePlantsLostProps",
+        "StarChallengeSimultaneousPlantsProps",
+        "StarChallengeSpendSunHoldoutProps",
+        "StarChallengeSunProducedProps",
+        "WarMistProperties",
+        "WaveGeneratorProperties"
+      ],
+      "missing_modules": [
+        "WarMistProperties"
+      ],
+      "unported_zombies": [
+        "dark_juggler",
+        "dark_king",
+        "dark_rogue",
+        "dark_wizard"
+      ],
+      "unported_plants": [
+        "fumeshroom",
+        "magnetshroom",
+        "oakshooter",
+        "peanut",
+        "streetlamp"
+      ],
+      "reason": "Expected exactly one local object: ChallengeModule；原生模块：WarMistProperties；角色行为/资源：dark_juggler, dark_king, dark_wizard；植物待核对/移植：fumeshroom, magnetshroom, oakshooter, peanut, streetlamp",
+      "map_entry": true,
+      "source_reference_error": "Expected exactly one local object: ChallengeModule",
+      "planned_replacements": {
+        "dark_rogue": "dark_armor2"
+      },
+      "remaining_native_classes": [
+        "WarMistProperties"
+      ],
+      "remaining_actor_ports": [
+        "dark_juggler",
+        "dark_king",
+        "dark_wizard"
+      ]
+    },
+    {
+      "file": "dark20",
+      "status": "pending",
+      "sha256": "40d32a16562cb1c9d1ee70c57cb46f75700a24b3cd6204e9a13490ec4f9e88e6",
+      "grade_fields_removed_if_imported": 56,
+      "classes": [
+        "LevelDefinition",
+        "RandZombieProperties",
+        "SeedBankProperties",
+        "StarChallengeKillZombiesInTimeProps",
+        "StarChallengeModuleProperties",
+        "StarChallengePlantBeforeLineProps",
+        "StarChallengeSimultaneousPlantsProps",
+        "StarChallengeSunProducedProps",
+        "StarChallengeSunUsedProps",
+        "WaveGeneratorProperties"
+      ],
+      "missing_modules": [],
+      "unported_zombies": [
+        "dark_cavalry",
+        "dark_juggler",
+        "dark_wizard"
+      ],
+      "unported_plants": [],
+      "reason": "角色行为/资源：dark_juggler, dark_wizard",
+      "map_entry": true,
+      "source_reference_error": "",
+      "planned_replacements": {
+        "dark_cavalry": "dark_armor3"
+      },
+      "remaining_native_classes": [],
+      "remaining_actor_ports": [
+        "dark_juggler",
+        "dark_wizard"
+      ]
+    },
+    {
+      "file": "dark21",
+      "status": "pending",
+      "sha256": "031a8fd2ca5be83d543fcf2d401bc78feba2dca664a47582e2bb57eac501df74",
+      "grade_fields_removed_if_imported": 49,
+      "classes": [
+        "GravestoneProperties",
+        "LevelDefinition",
+        "PowerTileIntroProperties",
+        "RandZombieProperties",
+        "SeedBankProperties",
+        "StarChallengeModuleProperties",
+        "StarChallengePlantsLostProps",
+        "StarChallengeSimultaneousPlantsProps",
+        "StarChallengeSpendSunHoldoutProps",
+        "StarChallengeSunUsedProps",
+        "StarChallengeZombieDistanceProps",
+        "WaveGeneratorProperties",
+        "ZombiePotionModuleProperties"
+      ],
+      "missing_modules": [
+        "ZombiePotionModuleProperties"
+      ],
+      "unported_zombies": [
+        "dark_cavalry",
+        "dark_rogue"
+      ],
+      "unported_plants": [],
+      "reason": "原生模块：ZombiePotionModuleProperties",
+      "map_entry": true,
+      "source_reference_error": "",
+      "planned_replacements": {
+        "dark_cavalry": "dark_armor3",
+        "dark_rogue": "dark_armor2"
+      },
+      "remaining_native_classes": [
+        "ZombiePotionModuleProperties"
+      ],
+      "remaining_actor_ports": []
+    },
+    {
+      "file": "dark22",
+      "status": "placeholder",
+      "sha256": "a457e1ed61cfc81e16c8f9e6022bde68a953716befc4e6b94a59d71aaf434cb6",
+      "grade_fields_removed_if_imported": 73,
+      "classes": [
+        "LevelDefinition",
+        "OakTrainIntroProperties",
+        "OakTrainProperties",
+        "StarChallengeBeatTheLevelProps",
+        "StarChallengeModuleProperties",
+        "WaveGeneratorProperties"
+      ],
+      "missing_modules": [
+        "OakTrainIntroProperties",
+        "OakTrainProperties"
+      ],
+      "unported_zombies": [
+        "zombie_target_archmage",
+        "zombie_target_arrow_blue",
+        "zombie_target_arrow_yellow",
+        "zombie_target_bottle",
+        "zombie_target_gargantuar",
+        "zombie_target_wizard"
+      ],
+      "unported_plants": [],
+      "reason": "按新要求接可结束空关，不加载小游戏模块",
+      "map_entry": true,
+      "source_reference_error": "",
+      "planned_replacements": {},
+      "remaining_native_classes": [
+        "OakTrainIntroProperties",
+        "OakTrainProperties"
+      ],
+      "remaining_actor_ports": [
+        "zombie_target_archmage",
+        "zombie_target_arrow_blue",
+        "zombie_target_arrow_yellow",
+        "zombie_target_bottle",
+        "zombie_target_gargantuar",
+        "zombie_target_wizard"
+      ]
+    },
+    {
+      "file": "dark23",
+      "status": "pending",
+      "sha256": "7d984ea9c535599e2ac48e5ae4db8a4aadb5408c29b20dd34167f89773095c8e",
+      "grade_fields_removed_if_imported": 44,
+      "classes": [
+        "GravestoneProperties",
+        "LastStandMinigameProperties",
+        "LevelDefinition",
+        "RandZombieProperties",
+        "SeedBankProperties",
+        "StarChallengeBeatTheLevelProps",
+        "StarChallengeModuleProperties",
+        "WaveGeneratorProperties",
+        "ZombiePotionModuleProperties"
+      ],
+      "missing_modules": [
+        "ZombiePotionModuleProperties"
+      ],
+      "unported_zombies": [
+        "dark_cavalry",
+        "dark_king",
+        "dark_rogue"
+      ],
+      "unported_plants": [],
+      "reason": "角色行为/资源：dark_king",
+      "map_entry": true,
+      "source_reference_error": "",
+      "planned_replacements": {
+        "dark_cavalry": "dark_armor3",
+        "dark_rogue": "dark_armor2"
+      },
+      "remaining_native_classes": [],
+      "remaining_actor_ports": [
+        "dark_king"
+      ]
+    },
+    {
+      "file": "dark24",
+      "status": "pending",
+      "sha256": "5c91d58c778f00583818cc53e51c7abd684fb75a3a9e25c38e5ecd8907c7ba32",
+      "grade_fields_removed_if_imported": 46,
+      "classes": [
+        "GravestoneProperties",
+        "LevelDefinition",
+        "RandZombieProperties",
+        "SeedBankProperties",
+        "StarChallengeModuleProperties",
+        "StarChallengePlantBeforeLineProps",
+        "StarChallengePlantsLostProps",
+        "StarChallengeSpendSunHoldoutProps",
+        "StarChallengeSunProducedProps",
+        "StarChallengeZombieDistanceProps",
+        "WaveGeneratorProperties",
+        "ZombiePotionModuleProperties"
+      ],
+      "missing_modules": [
+        "ZombiePotionModuleProperties"
+      ],
+      "unported_zombies": [
+        "dark_archmage",
+        "dark_cavalry",
+        "dark_juggler",
+        "dark_king"
+      ],
+      "unported_plants": [],
+      "reason": "原生模块：ZombiePotionModuleProperties；角色行为/资源：dark_juggler, dark_king, dark_wizard",
+      "map_entry": true,
+      "source_reference_error": "",
+      "planned_replacements": {
+        "dark_archmage": "dark_wizard",
+        "dark_cavalry": "dark_armor3"
+      },
+      "remaining_native_classes": [
+        "ZombiePotionModuleProperties"
+      ],
+      "remaining_actor_ports": [
+        "dark_juggler",
+        "dark_king",
+        "dark_wizard"
+      ]
+    },
+    {
+      "file": "dark25",
+      "status": "pending",
+      "sha256": "10ca17642a82aee2d276d48469eeba024ee5235553c77db90be998546f853994",
+      "grade_fields_removed_if_imported": 72,
+      "classes": [
+        "LevelDefinition",
+        "RandZombieProperties",
+        "SeedBankProperties",
+        "StarChallengeKillZombiesInTimeProps",
+        "StarChallengeModuleProperties",
+        "StarChallengePlantBeforeLineProps",
+        "StarChallengeSunProducedProps",
+        "StarChallengeSunUsedProps",
+        "StarChallengeZombieDistanceProps",
+        "WarMistProperties",
+        "WaveGeneratorProperties"
+      ],
+      "missing_modules": [
+        "WarMistProperties"
+      ],
+      "unported_zombies": [
+        "dark_cavalry",
+        "dark_juggler",
+        "dark_king",
+        "dark_rogue",
+        "dark_wizard"
+      ],
+      "unported_plants": [],
+      "reason": "角色行为/资源：dark_juggler, dark_king, dark_wizard",
+      "map_entry": true,
+      "source_reference_error": "",
+      "planned_replacements": {
+        "dark_cavalry": "dark_armor3",
+        "dark_rogue": "dark_armor2"
+      },
+      "remaining_native_classes": [],
+      "remaining_actor_ports": [
+        "dark_juggler",
+        "dark_king",
+        "dark_wizard"
+      ]
+    },
+    {
+      "file": "dark26",
+      "status": "pending",
+      "sha256": "5b84e6f99100392fe794fae1f7ffbc1a2903fb633e5aae7befc3cd64543f56cd",
+      "grade_fields_removed_if_imported": 68,
+      "classes": [
+        "LevelDefinition",
+        "RandZombieProperties",
+        "SeedBankProperties",
+        "StarChallengeModuleProperties",
+        "StarChallengePlantBeforeLineProps",
+        "StarChallengePlantsLostProps",
+        "StarChallengeSimultaneousPlantsProps",
+        "StarChallengeSunProducedProps",
+        "StarChallengeZombieDistanceProps",
+        "WarMistProperties",
+        "WaveGeneratorProperties"
+      ],
+      "missing_modules": [
+        "WarMistProperties"
+      ],
+      "unported_zombies": [
+        "dark_cavalry",
+        "dark_gargantuar",
+        "dark_imp",
+        "dark_juggler",
+        "dark_king",
+        "dark_wizard"
+      ],
+      "unported_plants": [],
+      "reason": "角色行为/资源：dark_gargantuar, dark_imp, dark_juggler, dark_king, dark_wizard",
+      "map_entry": true,
+      "source_reference_error": "",
+      "planned_replacements": {
+        "dark_cavalry": "dark_armor3"
+      },
+      "remaining_native_classes": [],
+      "remaining_actor_ports": [
+        "dark_gargantuar",
+        "dark_imp",
+        "dark_juggler",
+        "dark_king",
+        "dark_wizard"
+      ]
+    },
+    {
+      "file": "dark27",
+      "status": "pending",
+      "sha256": "15360bcf8a38501671b5ef6a29de47d7a915529948b13671eec451521eb48f7f",
+      "grade_fields_removed_if_imported": 61,
+      "classes": [
+        "GravestoneProperties",
+        "LevelDefinition",
+        "PowerTileIntroProperties",
+        "RandZombieProperties",
+        "SeedBankProperties",
+        "StarChallengeModuleProperties",
+        "StarChallengePlantsLostProps",
+        "StarChallengeSimultaneousPlantsProps",
+        "StarChallengeSpendSunHoldoutProps",
+        "StarChallengeSunUsedProps",
+        "StarChallengeZombieDistanceProps",
+        "WarMistProperties",
+        "WaveGeneratorProperties",
+        "ZombiePotionModuleProperties"
+      ],
+      "missing_modules": [
+        "WarMistProperties",
+        "ZombiePotionModuleProperties"
+      ],
+      "unported_zombies": [
+        "dark_archmage",
+        "dark_cavalry",
+        "dark_gargantuar",
+        "dark_imp",
+        "dark_juggler",
+        "dark_king"
+      ],
+      "unported_plants": [],
+      "reason": "角色行为/资源：dark_gargantuar, dark_imp, dark_juggler, dark_king, dark_wizard",
+      "map_entry": true,
+      "source_reference_error": "",
+      "planned_replacements": {
+        "dark_archmage": "dark_wizard",
+        "dark_cavalry": "dark_armor3"
+      },
+      "remaining_native_classes": [],
+      "remaining_actor_ports": [
+        "dark_gargantuar",
+        "dark_imp",
+        "dark_juggler",
+        "dark_king",
+        "dark_wizard"
+      ]
+    },
+    {
+      "file": "dark28",
+      "status": "pending",
+      "sha256": "10cdd9c61a57b1e61346231048a26932ccd18084a78bd8e0c674969b741f8a95",
+      "grade_fields_removed_if_imported": 50,
+      "classes": [
+        "LevelDefinition",
+        "RandZombieProperties",
+        "SeedBankProperties",
+        "StarChallengeModuleProperties",
+        "StarChallengePlantsLostProps",
+        "StarChallengeSimultaneousPlantsProps",
+        "StarChallengeSunProducedProps",
+        "StarChallengeSunUsedProps",
+        "StarChallengeZombieDistanceProps",
+        "WarMistProperties",
+        "WaveGeneratorProperties"
+      ],
+      "missing_modules": [
+        "WarMistProperties"
+      ],
+      "unported_zombies": [
+        "dark_cavalry",
+        "dark_gargantuar",
+        "dark_king",
+        "dark_rogue",
+        "dark_wizard"
+      ],
+      "unported_plants": [],
+      "reason": "角色行为/资源：dark_gargantuar, dark_king, dark_wizard",
+      "map_entry": true,
+      "source_reference_error": "",
+      "planned_replacements": {
+        "dark_cavalry": "dark_armor3",
+        "dark_rogue": "dark_armor2"
+      },
+      "remaining_native_classes": [],
+      "remaining_actor_ports": [
+        "dark_gargantuar",
+        "dark_king",
+        "dark_wizard"
+      ]
+    },
+    {
+      "file": "dark29",
+      "status": "pending",
+      "sha256": "ccc183db79166ab2ae9b31666315b72a276cf3c6c51de653af647f52eea5c83a",
+      "grade_fields_removed_if_imported": 46,
+      "classes": [
+        "GravestoneProperties",
+        "LevelDefinition",
+        "PowerTileIntroProperties",
+        "RandZombieProperties",
+        "SeedBankProperties",
+        "StarChallengeBeatTheLevelProps",
+        "StarChallengeModuleProperties",
+        "StarChallengePlantBeforeLineProps",
+        "StarChallengeSimultaneousPlantsProps",
+        "StarChallengeSpendSunHoldoutProps",
+        "StarChallengeSunUsedProps",
+        "StarChallengeZombieDistanceProps",
+        "WarMistProperties",
+        "WaveGeneratorProperties",
+        "ZombiePotionModuleProperties"
+      ],
+      "missing_modules": [
+        "WarMistProperties",
+        "ZombiePotionModuleProperties"
+      ],
+      "unported_zombies": [
+        "dark_archmage",
+        "dark_cavalry",
+        "dark_gargantuar",
+        "dark_juggler",
+        "dark_king",
+        "dark_wizard"
+      ],
+      "unported_plants": [],
+      "reason": "原生模块：ZombiePotionModuleProperties；角色行为/资源：dark_gargantuar, dark_juggler, dark_king, dark_wizard",
+      "map_entry": true,
+      "source_reference_error": "",
+      "planned_replacements": {
+        "dark_archmage": "dark_wizard",
+        "dark_cavalry": "dark_armor3"
+      },
+      "remaining_native_classes": [
+        "ZombiePotionModuleProperties"
+      ],
+      "remaining_actor_ports": [
+        "dark_gargantuar",
+        "dark_juggler",
+        "dark_king",
+        "dark_wizard"
+      ]
+    },
+    {
+      "file": "dark30",
+      "status": "pending",
+      "sha256": "ce9dd6c8549fdfeccf38e9adb5cf7896ef90ff35c0692e1d71ce2da2d6008119",
+      "grade_fields_removed_if_imported": 0,
+      "classes": [
+        "LevelDefinition",
+        "SeedBankProperties",
+        "StarChallengeBeatTheLevelProps",
+        "StarChallengeModuleProperties",
+        "ZombossMechBattleModuleProperties",
+        "ZombossMechLastStandIntroProperties"
+      ],
+      "missing_modules": [
+        "ZombossMechBattleModuleProperties",
+        "ZombossMechLastStandIntroProperties"
+      ],
+      "unported_zombies": [],
+      "unported_plants": [],
+      "reason": "原生模块：ZombossMechBattleModuleProperties, ZombossMechLastStandIntroProperties",
+      "map_entry": true,
+      "source_reference_error": "",
+      "planned_replacements": {},
+      "remaining_native_classes": [
+        "ZombossMechBattleModuleProperties",
+        "ZombossMechLastStandIntroProperties"
+      ],
+      "remaining_actor_ports": []
+    },
+    {
+      "file": "dark31",
+      "status": "pending",
+      "sha256": "13d814335b3dc91a96107aba0f46fb780764e112228d952145e0bd27d82cd8f6",
+      "grade_fields_removed_if_imported": 8,
+      "classes": [
+        "ConveyorSeedBankProperties",
+        "LevelDefinition",
+        "StarChallengeBeatTheLevelProps",
+        "StarChallengeModuleProperties",
+        "ZombossMechBattleModuleProperties"
+      ],
+      "missing_modules": [
+        "ZombossMechBattleModuleProperties"
+      ],
+      "unported_zombies": [],
+      "unported_plants": [
+        "fireshroom",
+        "fumeshroom",
+        "hypnoshroom",
+        "iceshroom",
+        "magnetshroom",
+        "oakshooter",
+        "peanut"
+      ],
+      "reason": "原生模块：ZombossMechBattleModuleProperties；植物待核对/移植：fireshroom, fumeshroom, hypnoshroom, iceshroom, magnetshroom, oakshooter, peanut",
+      "map_entry": false,
+      "source_reference_error": "",
+      "planned_replacements": {},
+      "remaining_native_classes": [
+        "ZombossMechBattleModuleProperties"
+      ],
+      "remaining_actor_ports": []
+    },
+    {
+      "file": "dark_challenge_evil_a",
+      "status": "pending",
+      "sha256": "4744405c10ad1cc5913a5f0a2350de1c6f1ac70a5936eea1e22d1f238c2f7fbc",
+      "grade_fields_removed_if_imported": 0,
+      "classes": [
+        "ConveyorSeedBankProperties",
+        "LevelDefinition",
+        "RandZombieProperties",
+        "StarChallengeBeatTheLevelProps",
+        "StarChallengeModuleProperties",
+        "WaveGeneratorProperties",
+        "ZombiePotionModuleProperties"
+      ],
+      "missing_modules": [
+        "ZombiePotionModuleProperties"
+      ],
+      "unported_zombies": [
+        "dark_basic",
+        "dark_gargantuar",
+        "dark_juggler"
+      ],
+      "unported_plants": [
+        "hypnoshroom"
+      ],
+      "reason": "原生模块：ZombiePotionModuleProperties；角色行为/资源：dark_gargantuar, dark_juggler；植物待核对/移植：hypnoshroom",
+      "map_entry": false,
+      "source_reference_error": "",
+      "planned_replacements": {
+        "dark_basic": "dark"
+      },
+      "remaining_native_classes": [
+        "ZombiePotionModuleProperties"
+      ],
+      "remaining_actor_ports": [
+        "dark_gargantuar",
+        "dark_juggler"
+      ]
+    },
+    {
+      "file": "dark_challenge_evil_b",
+      "status": "pending",
+      "sha256": "48b8cc8e200db347ed078cb20e41727c0947c0db750239b0e8639406f948035a",
+      "grade_fields_removed_if_imported": 0,
+      "classes": [
+        "ConveyorSeedBankProperties",
+        "LevelDefinition",
+        "RandZombieProperties",
+        "StarChallengeBeatTheLevelProps",
+        "StarChallengeModuleProperties",
+        "WaveGeneratorProperties",
+        "ZombiePotionModuleProperties"
+      ],
+      "missing_modules": [
+        "ZombiePotionModuleProperties"
+      ],
+      "unported_zombies": [
+        "dark_basic",
+        "dark_cavalry",
+        "dark_juggler"
+      ],
+      "unported_plants": [
+        "hypnoshroom"
+      ],
+      "reason": "原生模块：ZombiePotionModuleProperties；角色行为/资源：dark_juggler；植物待核对/移植：hypnoshroom",
+      "map_entry": false,
+      "source_reference_error": "",
+      "planned_replacements": {
+        "dark_basic": "dark",
+        "dark_cavalry": "dark_armor3"
+      },
+      "remaining_native_classes": [
+        "ZombiePotionModuleProperties"
+      ],
+      "remaining_actor_ports": [
+        "dark_juggler"
+      ]
+    },
+    {
+      "file": "dark_challenge_evil_c",
+      "status": "pending",
+      "sha256": "bbcdef18962eff034001751c7fc5aed5fe0d59bc39b7bb7ff820143365a63ab4",
+      "grade_fields_removed_if_imported": 0,
+      "classes": [
+        "ConveyorSeedBankProperties",
+        "LevelDefinition",
+        "RandZombieProperties",
+        "StarChallengeBeatTheLevelProps",
+        "StarChallengeModuleProperties",
+        "WaveGeneratorProperties",
+        "ZombiePotionModuleProperties"
+      ],
+      "missing_modules": [
+        "ZombiePotionModuleProperties"
+      ],
+      "unported_zombies": [
+        "dark_basic",
+        "dark_cavalry",
+        "dark_juggler",
+        "dark_wizard"
+      ],
+      "unported_plants": [
+        "hypnoshroom"
+      ],
+      "reason": "原生模块：ZombiePotionModuleProperties；角色行为/资源：dark_juggler, dark_wizard；植物待核对/移植：hypnoshroom",
+      "map_entry": false,
+      "source_reference_error": "",
+      "planned_replacements": {
+        "dark_basic": "dark",
+        "dark_cavalry": "dark_armor3"
+      },
+      "remaining_native_classes": [
+        "ZombiePotionModuleProperties"
+      ],
+      "remaining_actor_ports": [
+        "dark_juggler",
+        "dark_wizard"
+      ]
+    },
+    {
+      "file": "dark_challenge_hypnoshroom_a",
+      "status": "pending",
+      "sha256": "149d25827da4e7c762400a3e1c4d6212ab0b6dd7c240ce2a21f3f9b81b55b9bd",
+      "grade_fields_removed_if_imported": 0,
+      "classes": [
+        "ConveyorSeedBankProperties",
+        "LevelDefinition",
+        "RandZombieProperties",
+        "StarChallengeBeatTheLevelProps",
+        "StarChallengeModuleProperties",
+        "WaveGeneratorProperties",
+        "ZombiePotionModuleProperties"
+      ],
+      "missing_modules": [
+        "ZombiePotionModuleProperties"
+      ],
+      "unported_zombies": [
+        "dark_basic",
+        "dark_gargantuar",
+        "dark_juggler"
+      ],
+      "unported_plants": [
+        "hypnoshroom"
+      ],
+      "reason": "原生模块：ZombiePotionModuleProperties；角色行为/资源：dark_gargantuar, dark_juggler；植物待核对/移植：hypnoshroom",
+      "map_entry": true,
+      "source_reference_error": "",
+      "planned_replacements": {
+        "dark_basic": "dark"
+      },
+      "remaining_native_classes": [
+        "ZombiePotionModuleProperties"
+      ],
+      "remaining_actor_ports": [
+        "dark_gargantuar",
+        "dark_juggler"
+      ]
+    },
+    {
+      "file": "dark_challenge_hypnoshroom_b",
+      "status": "pending",
+      "sha256": "13f0472fbb81d166748dfd3fa2e8d8d2d5b4935adda51b403a0febc36f6b8660",
+      "grade_fields_removed_if_imported": 0,
+      "classes": [
+        "ConveyorSeedBankProperties",
+        "LevelDefinition",
+        "RandZombieProperties",
+        "StarChallengeBeatTheLevelProps",
+        "StarChallengeModuleProperties",
+        "WaveGeneratorProperties",
+        "ZombiePotionModuleProperties"
+      ],
+      "missing_modules": [
+        "ZombiePotionModuleProperties"
+      ],
+      "unported_zombies": [
+        "dark_basic",
+        "dark_cavalry",
+        "dark_juggler"
+      ],
+      "unported_plants": [
+        "hypnoshroom"
+      ],
+      "reason": "原生模块：ZombiePotionModuleProperties；角色行为/资源：dark_juggler；植物待核对/移植：hypnoshroom",
+      "map_entry": true,
+      "source_reference_error": "",
+      "planned_replacements": {
+        "dark_basic": "dark",
+        "dark_cavalry": "dark_armor3"
+      },
+      "remaining_native_classes": [
+        "ZombiePotionModuleProperties"
+      ],
+      "remaining_actor_ports": [
+        "dark_juggler"
+      ]
+    },
+    {
+      "file": "dark_challenge_hypnoshroom_c",
+      "status": "pending",
+      "sha256": "01e73ca02c82166361ec74117fe2c97b71539d0ef1ec130860d97b4c1fe6b9e4",
+      "grade_fields_removed_if_imported": 0,
+      "classes": [
+        "ConveyorSeedBankProperties",
+        "LevelDefinition",
+        "RandZombieProperties",
+        "StarChallengeBeatTheLevelProps",
+        "StarChallengeModuleProperties",
+        "WaveGeneratorProperties",
+        "ZombiePotionModuleProperties"
+      ],
+      "missing_modules": [
+        "ZombiePotionModuleProperties"
+      ],
+      "unported_zombies": [
+        "dark_basic",
+        "dark_cavalry",
+        "dark_juggler",
+        "dark_wizard"
+      ],
+      "unported_plants": [
+        "hypnoshroom"
+      ],
+      "reason": "原生模块：ZombiePotionModuleProperties；角色行为/资源：dark_juggler, dark_wizard；植物待核对/移植：hypnoshroom",
+      "map_entry": true,
+      "source_reference_error": "",
+      "planned_replacements": {
+        "dark_basic": "dark",
+        "dark_cavalry": "dark_armor3"
+      },
+      "remaining_native_classes": [
+        "ZombiePotionModuleProperties"
+      ],
+      "remaining_actor_ports": [
+        "dark_juggler",
+        "dark_wizard"
+      ]
+    },
+    {
+      "file": "dark_challenge_oakshooter_a",
+      "status": "placeholder",
+      "sha256": "3f84ac32a0df258389c9953ab66866a2967af6eef3fc44a7640ed99f566e8a6c",
+      "grade_fields_removed_if_imported": 87,
+      "classes": [
+        "LevelDefinition",
+        "OakTrainIntroProperties",
+        "OakTrainProperties",
+        "StarChallengeBeatTheLevelProps",
+        "StarChallengeModuleProperties",
+        "WaveGeneratorProperties"
+      ],
+      "missing_modules": [
+        "OakTrainIntroProperties",
+        "OakTrainProperties"
+      ],
+      "unported_zombies": [
+        "zombie_target_archmage",
+        "zombie_target_arrow_blue",
+        "zombie_target_arrow_yellow",
+        "zombie_target_bottle",
+        "zombie_target_gargantuar",
+        "zombie_target_wizard"
+      ],
+      "unported_plants": [],
+      "reason": "按新要求接可结束空关，不加载小游戏模块",
+      "map_entry": true,
+      "source_reference_error": "",
+      "planned_replacements": {},
+      "remaining_native_classes": [
+        "OakTrainIntroProperties",
+        "OakTrainProperties"
+      ],
+      "remaining_actor_ports": [
+        "zombie_target_archmage",
+        "zombie_target_arrow_blue",
+        "zombie_target_arrow_yellow",
+        "zombie_target_bottle",
+        "zombie_target_gargantuar",
+        "zombie_target_wizard"
+      ]
+    },
+    {
+      "file": "dark_challenge_oakshooter_b",
+      "status": "placeholder",
+      "sha256": "1d59076bc621b8ffa9b77d6e00aea5be039952bae8a8a460bccc196cafa23aa4",
+      "grade_fields_removed_if_imported": 69,
+      "classes": [
+        "LevelDefinition",
+        "OakTrainProperties",
+        "StarChallengeBeatTheLevelProps",
+        "StarChallengeModuleProperties",
+        "WaveGeneratorProperties"
+      ],
+      "missing_modules": [
+        "OakTrainProperties"
+      ],
+      "unported_zombies": [
+        "zombie_target_archmage",
+        "zombie_target_arrow_blue",
+        "zombie_target_arrow_yellow",
+        "zombie_target_bottle",
+        "zombie_target_gargantuar",
+        "zombie_target_wizard"
+      ],
+      "unported_plants": [],
+      "reason": "按新要求接可结束空关，不加载小游戏模块",
+      "map_entry": true,
+      "source_reference_error": "",
+      "planned_replacements": {},
+      "remaining_native_classes": [
+        "OakTrainProperties"
+      ],
+      "remaining_actor_ports": [
+        "zombie_target_archmage",
+        "zombie_target_arrow_blue",
+        "zombie_target_arrow_yellow",
+        "zombie_target_bottle",
+        "zombie_target_gargantuar",
+        "zombie_target_wizard"
+      ]
+    },
+    {
+      "file": "dark_challenge_oakshooter_c",
+      "status": "placeholder",
+      "sha256": "dc8542c97a49dd1a2644907794e89be6dee0a181bc79d8efcb2f3dfc590d4cd4",
+      "grade_fields_removed_if_imported": 133,
+      "classes": [
+        "LevelDefinition",
+        "OakTrainProperties",
+        "StarChallengeBeatTheLevelProps",
+        "StarChallengeModuleProperties",
+        "WaveGeneratorProperties"
+      ],
+      "missing_modules": [
+        "OakTrainProperties"
+      ],
+      "unported_zombies": [
+        "zombie_target_archmage",
+        "zombie_target_arrow_blue",
+        "zombie_target_arrow_yellow",
+        "zombie_target_bottle",
+        "zombie_target_gargantuar",
+        "zombie_target_wizard"
+      ],
+      "unported_plants": [],
+      "reason": "按新要求接可结束空关，不加载小游戏模块",
+      "map_entry": true,
+      "source_reference_error": "",
+      "planned_replacements": {},
+      "remaining_native_classes": [
+        "OakTrainProperties"
+      ],
+      "remaining_actor_ports": [
+        "zombie_target_archmage",
+        "zombie_target_arrow_blue",
+        "zombie_target_arrow_yellow",
+        "zombie_target_bottle",
+        "zombie_target_gargantuar",
+        "zombie_target_wizard"
+      ]
+    },
+    {
+      "file": "dark_challenge_single_a",
+      "status": "placeholder",
+      "sha256": "c2535d4b29f99309385ba01c885444698198f319ffdc01af03d3e71ecb32aa63",
+      "grade_fields_removed_if_imported": 0,
+      "classes": [
+        "LevelDefinition",
+        "OakTrainProperties",
+        "StarChallengeBeatTheLevelProps",
+        "StarChallengeModuleProperties",
+        "WaveGeneratorProperties"
+      ],
+      "missing_modules": [
+        "OakTrainProperties"
+      ],
+      "unported_zombies": [
+        "zombie_target_boss",
+        "zombie_target_dave",
+        "zombie_target_normal"
+      ],
+      "unported_plants": [],
+      "reason": "按新要求接可结束空关，不加载小游戏模块",
+      "map_entry": false,
+      "source_reference_error": "",
+      "planned_replacements": {},
+      "remaining_native_classes": [
+        "OakTrainProperties"
+      ],
+      "remaining_actor_ports": [
+        "zombie_target_boss",
+        "zombie_target_dave",
+        "zombie_target_normal"
+      ]
+    },
+    {
+      "file": "dark_challenge_single_b",
+      "status": "placeholder",
+      "sha256": "c2535d4b29f99309385ba01c885444698198f319ffdc01af03d3e71ecb32aa63",
+      "grade_fields_removed_if_imported": 0,
+      "classes": [
+        "LevelDefinition",
+        "OakTrainProperties",
+        "StarChallengeBeatTheLevelProps",
+        "StarChallengeModuleProperties",
+        "WaveGeneratorProperties"
+      ],
+      "missing_modules": [
+        "OakTrainProperties"
+      ],
+      "unported_zombies": [
+        "zombie_target_boss",
+        "zombie_target_dave",
+        "zombie_target_normal"
+      ],
+      "unported_plants": [],
+      "reason": "按新要求接可结束空关，不加载小游戏模块",
+      "map_entry": false,
+      "source_reference_error": "",
+      "planned_replacements": {},
+      "remaining_native_classes": [
+        "OakTrainProperties"
+      ],
+      "remaining_actor_ports": [
+        "zombie_target_boss",
+        "zombie_target_dave",
+        "zombie_target_normal"
+      ]
+    },
+    {
+      "file": "dark_challenge_single_c",
+      "status": "placeholder",
+      "sha256": "c2535d4b29f99309385ba01c885444698198f319ffdc01af03d3e71ecb32aa63",
+      "grade_fields_removed_if_imported": 0,
+      "classes": [
+        "LevelDefinition",
+        "OakTrainProperties",
+        "StarChallengeBeatTheLevelProps",
+        "StarChallengeModuleProperties",
+        "WaveGeneratorProperties"
+      ],
+      "missing_modules": [
+        "OakTrainProperties"
+      ],
+      "unported_zombies": [
+        "zombie_target_boss",
+        "zombie_target_dave",
+        "zombie_target_normal"
+      ],
+      "unported_plants": [],
+      "reason": "按新要求接可结束空关，不加载小游戏模块",
+      "map_entry": false,
+      "source_reference_error": "",
+      "planned_replacements": {},
+      "remaining_native_classes": [
+        "OakTrainProperties"
+      ],
+      "remaining_actor_ports": [
+        "zombie_target_boss",
+        "zombie_target_dave",
+        "zombie_target_normal"
+      ]
+    },
+    {
+      "file": "dark_challenge_sunbombs_a",
+      "status": "placeholder",
+      "sha256": "4f2c142ba5c457d5c47335856136af9f0ae2b3dc410952d436867c77ebb9c1a4",
+      "grade_fields_removed_if_imported": 0,
+      "classes": [
+        "LevelDefinition",
+        "SeedBankProperties",
+        "TowerDefendProperties",
+        "WaveGeneratorProperties"
+      ],
+      "missing_modules": [
+        "TowerDefendProperties"
+      ],
+      "unported_zombies": [
+        "zombie_towerdefend_bucket",
+        "zombie_towerdefend_jester",
+        "zombie_towerdefend_knight",
+        "zombie_towerdefend_normal",
+        "zombie_towerdefend_wolf_imp"
+      ],
+      "unported_plants": [],
+      "reason": "按新要求接可结束空关，不加载小游戏模块",
+      "map_entry": false,
+      "source_reference_error": "",
+      "planned_replacements": {},
+      "remaining_native_classes": [
+        "TowerDefendProperties"
+      ],
+      "remaining_actor_ports": [
+        "zombie_towerdefend_bucket",
+        "zombie_towerdefend_jester",
+        "zombie_towerdefend_knight",
+        "zombie_towerdefend_normal",
+        "zombie_towerdefend_wolf_imp"
+      ]
+    },
+    {
+      "file": "dark_challenge_sunbombs_b",
+      "status": "placeholder",
+      "sha256": "1aee2225ef57b1af4c16ff5fb3ebceadedc055f990b70b39bdd18a27b2fc545e",
+      "grade_fields_removed_if_imported": 0,
+      "classes": [
+        "LevelDefinition",
+        "SeedBankProperties",
+        "TowerDefendProperties",
+        "WaveGeneratorProperties"
+      ],
+      "missing_modules": [
+        "TowerDefendProperties"
+      ],
+      "unported_zombies": [
+        "zombie_towerdefend_bucket",
+        "zombie_towerdefend_gargantuar",
+        "zombie_towerdefend_helmet",
+        "zombie_towerdefend_jester",
+        "zombie_towerdefend_knight",
+        "zombie_towerdefend_normal",
+        "zombie_towerdefend_wolf_fire",
+        "zombie_towerdefend_wolf_imp"
+      ],
+      "unported_plants": [],
+      "reason": "按新要求接可结束空关，不加载小游戏模块",
+      "map_entry": false,
+      "source_reference_error": "",
+      "planned_replacements": {},
+      "remaining_native_classes": [
+        "TowerDefendProperties"
+      ],
+      "remaining_actor_ports": [
+        "zombie_towerdefend_bucket",
+        "zombie_towerdefend_gargantuar",
+        "zombie_towerdefend_helmet",
+        "zombie_towerdefend_jester",
+        "zombie_towerdefend_knight",
+        "zombie_towerdefend_normal",
+        "zombie_towerdefend_wolf_fire",
+        "zombie_towerdefend_wolf_imp"
+      ]
+    },
+    {
+      "file": "dark_challenge_sunbombs_c",
+      "status": "placeholder",
+      "sha256": "37ac8867cbcbb2066540ce4c8355854133e8fd87efdf2f3e435577f04f38f0a2",
+      "grade_fields_removed_if_imported": 0,
+      "classes": [
+        "LevelDefinition",
+        "SeedBankProperties",
+        "TowerDefendIntroProperties",
+        "TowerDefendProperties",
+        "WaveGeneratorProperties"
+      ],
+      "missing_modules": [
+        "TowerDefendIntroProperties",
+        "TowerDefendProperties"
+      ],
+      "unported_zombies": [
+        "zombie_towerdefend_boss",
+        "zombie_towerdefend_bucket",
+        "zombie_towerdefend_gargantuar",
+        "zombie_towerdefend_helmet",
+        "zombie_towerdefend_jester",
+        "zombie_towerdefend_knight",
+        "zombie_towerdefend_normal",
+        "zombie_towerdefend_wizard",
+        "zombie_towerdefend_wolf_imp"
+      ],
+      "unported_plants": [],
+      "reason": "按新要求接可结束空关，不加载小游戏模块",
+      "map_entry": false,
+      "source_reference_error": "",
+      "planned_replacements": {},
+      "remaining_native_classes": [
+        "TowerDefendIntroProperties",
+        "TowerDefendProperties"
+      ],
+      "remaining_actor_ports": [
+        "zombie_towerdefend_boss",
+        "zombie_towerdefend_bucket",
+        "zombie_towerdefend_gargantuar",
+        "zombie_towerdefend_helmet",
+        "zombie_towerdefend_jester",
+        "zombie_towerdefend_knight",
+        "zombie_towerdefend_normal",
+        "zombie_towerdefend_wizard",
+        "zombie_towerdefend_wolf_imp"
+      ]
+    },
+    {
+      "file": "dark_challenge_threepigs_a",
+      "status": "placeholder",
+      "sha256": "39e84b9e8684afe72d0725f2ad99fcbb88da7ec0faac8b254536629ba95adc95",
+      "grade_fields_removed_if_imported": 0,
+      "classes": [
+        "LevelDefinition",
+        "SeedBankProperties",
+        "StarChallengeBeatTheLevelProps",
+        "StarChallengeModuleProperties",
+        "TowerDefendProperties",
+        "WaveGeneratorProperties"
+      ],
+      "missing_modules": [
+        "TowerDefendProperties"
+      ],
+      "unported_zombies": [
+        "zombie_towerdefend_bucket",
+        "zombie_towerdefend_jester",
+        "zombie_towerdefend_knight",
+        "zombie_towerdefend_normal",
+        "zombie_towerdefend_wolf_imp"
+      ],
+      "unported_plants": [],
+      "reason": "按新要求接可结束空关，不加载小游戏模块",
+      "map_entry": true,
+      "source_reference_error": "",
+      "planned_replacements": {},
+      "remaining_native_classes": [
+        "TowerDefendProperties"
+      ],
+      "remaining_actor_ports": [
+        "zombie_towerdefend_bucket",
+        "zombie_towerdefend_jester",
+        "zombie_towerdefend_knight",
+        "zombie_towerdefend_normal",
+        "zombie_towerdefend_wolf_imp"
+      ]
+    },
+    {
+      "file": "dark_challenge_threepigs_b",
+      "status": "placeholder",
+      "sha256": "60320a96694efa6e4c05a763c467f3acefa07633de66a57da7c2636937d72876",
+      "grade_fields_removed_if_imported": 0,
+      "classes": [
+        "LevelDefinition",
+        "SeedBankProperties",
+        "StarChallengeBeatTheLevelProps",
+        "StarChallengeModuleProperties",
+        "TowerDefendProperties",
+        "WaveGeneratorProperties"
+      ],
+      "missing_modules": [
+        "TowerDefendProperties"
+      ],
+      "unported_zombies": [
+        "zombie_towerdefend_bucket",
+        "zombie_towerdefend_gargantuar",
+        "zombie_towerdefend_helmet",
+        "zombie_towerdefend_jester",
+        "zombie_towerdefend_knight",
+        "zombie_towerdefend_normal",
+        "zombie_towerdefend_wolf_fire",
+        "zombie_towerdefend_wolf_imp"
+      ],
+      "unported_plants": [],
+      "reason": "按新要求接可结束空关，不加载小游戏模块",
+      "map_entry": true,
+      "source_reference_error": "",
+      "planned_replacements": {},
+      "remaining_native_classes": [
+        "TowerDefendProperties"
+      ],
+      "remaining_actor_ports": [
+        "zombie_towerdefend_bucket",
+        "zombie_towerdefend_gargantuar",
+        "zombie_towerdefend_helmet",
+        "zombie_towerdefend_jester",
+        "zombie_towerdefend_knight",
+        "zombie_towerdefend_normal",
+        "zombie_towerdefend_wolf_fire",
+        "zombie_towerdefend_wolf_imp"
+      ]
+    },
+    {
+      "file": "dark_challenge_threepigs_c",
+      "status": "placeholder",
+      "sha256": "28ffbe806fb0e446816d23cdf7ff9d63f7cfc0b264630c7082967055be2c1c80",
+      "grade_fields_removed_if_imported": 0,
+      "classes": [
+        "LevelDefinition",
+        "SeedBankProperties",
+        "StarChallengeBeatTheLevelProps",
+        "StarChallengeModuleProperties",
+        "TowerDefendIntroProperties",
+        "TowerDefendProperties",
+        "WaveGeneratorProperties"
+      ],
+      "missing_modules": [
+        "TowerDefendIntroProperties",
+        "TowerDefendProperties"
+      ],
+      "unported_zombies": [
+        "zombie_towerdefend_boss",
+        "zombie_towerdefend_bucket",
+        "zombie_towerdefend_gargantuar",
+        "zombie_towerdefend_helmet",
+        "zombie_towerdefend_jester",
+        "zombie_towerdefend_knight",
+        "zombie_towerdefend_normal",
+        "zombie_towerdefend_wizard",
+        "zombie_towerdefend_wolf_imp"
+      ],
+      "unported_plants": [],
+      "reason": "按新要求接可结束空关，不加载小游戏模块",
+      "map_entry": true,
+      "source_reference_error": "",
+      "planned_replacements": {},
+      "remaining_native_classes": [
+        "TowerDefendProperties"
+      ],
+      "remaining_actor_ports": [
+        "zombie_towerdefend_boss",
+        "zombie_towerdefend_bucket",
+        "zombie_towerdefend_gargantuar",
+        "zombie_towerdefend_helmet",
+        "zombie_towerdefend_jester",
+        "zombie_towerdefend_knight",
+        "zombie_towerdefend_normal",
+        "zombie_towerdefend_wizard",
+        "zombie_towerdefend_wolf_imp"
+      ]
+    }
+  ]
+}
