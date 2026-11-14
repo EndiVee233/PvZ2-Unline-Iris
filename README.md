@@ -1,7 +1,7 @@
 # PvZ2-Unline:Aster
 
 ## Unline系列
-- [PvZ2:Aster]((https://github.com/EndiVee233/PvZ2-Unline-Aster))
+- [PvZ2:Aster](https://github.com/EndiVee233/PvZ2-Unline-Aster)
 - PvZ2:Iris
 
 ## 介绍
